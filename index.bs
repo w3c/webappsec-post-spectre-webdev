@@ -23,12 +23,9 @@ urlPrefix: https://fetch.spec.whatwg.org/; spec: FETCH; type: dfn
 urlPrefix: https://tc39.es/ecma262/; spec: ECMA262; type: interface
     text: SharedArrayBuffer; url: #sec-sharedarraybuffer-objects
 </pre>
-<pre class="link-defaults">
-spec:html; type:method; text:postMessage(message, options)
-</pre>
 <pre class="biblio">
 {
-    "Spectre": {
+    "spectre": {
       "href": "https://ieeexplore.ieee.org/document/8835233",
       "title": "Spectre Attacks: Exploiting Speculative Execution",
       "publisher": "40th IEEE Symposium on Security and Privacy (S&P'19)",
@@ -51,32 +48,86 @@ spec:html; type:method; text:postMessage(message, options)
     "post-spectre-rethink": {
       "href": "https://chromium.googlesource.com/chromium/src/+/master/docs/security/side-channel-threat-model.md",
       "title": "Post-Spectre Threat Model Re-Think",
-      "publisher": "The Chromium Projects"
+      "authors": [ "Chromium" ]
     },
     "site-isolation": {
       "href": "https://www.chromium.org/Home/chromium-security/site-isolation",
       "title": "Site Isolation",
-      "publisher": "The Chromium Projects"
+      "authors": [ "Chromium" ]
     },
     "site-isolation": {
       "href": "https://www.chromium.org/Home/chromium-security/site-isolation",
       "title": "Site Isolation",
-      "publisher": "The Chromium Projects"
+      "authors": [ "Chromium" ]
     },
     "project-fission": {
       "href": "https://wiki.mozilla.org/Project_Fission",
       "title": "Project Fission",
-      "publisher": "Mozilla"
+      "authors": [ "Mozilla" ]
     },
     "resource-isolation-policy": {
       "href": "https://xsleaks.dev/docs/defenses/isolation-policies/resource-isolation/",
       "title": "Resource Isolation Policy",
-      "publisher": "XSLeaks Wiki"
+      "authors": [ "XSLeaks Wiki" ]
     },
     "coop-coep": {
       "href": "https://web.dev/coop-coep/",
       "title": "Making your website 'cross-origin isolated' using COOP and COEP",
       "authors": [ "Eiji Kitamura" ]
+    },
+    "coop-coep-explained": {
+      "href": "https://docs.google.com/document/d/1zDlfvfTJ_9e8Jdc8ehuV4zMEu9ySMCiTGMS9y0GU92k/edit",
+      "title": "COOP and COEP Explained",
+      "authors": [ "Artur Janc", "Charlie Reis", "Anne van Kesteren" ],
+      "date": "2020-01-03"
+    },
+    "application-principals": {
+      "href": "https://noncombatant.org/application-principals/",
+      "title": "Isolating Application-Defined Principals",
+      "authors": [ "Chris Palmer" ],
+      "date": "2018-06-19"
+    },
+    "long-term-mitigations": {
+      "href": "https://docs.google.com/document/d/1dnUjxfGWnvhQEIyCZb0F2LmCZ9gio6ogu2rhMGqi6gY/edit",
+      "title": "Long-Term Web Browser Mitigations for Spectre",
+      "authors": [ "Charlie Reis" ],
+      "date": "2019-03-04"
+    },
+    "spectre-shaped-web": {
+      "href": "https://docs.google.com/presentation/d/1sadl7jTrBIECCanuqSrNndnDr82NGW1yyuXFT1Dc7SQ/edit#slide=id.p",
+      "title": "A Spectre-shaped Web",
+      "authors": [ "Anne van Kesteren" ],
+      "date": "2019-04-16"
+    },
+    "spilling-the-beans": {
+      "href": "https://www.arturjanc.com/cross-origin-infoleaks.pdf",
+      "title": "How do we Stop Spilling The Beans Across Origins?",
+      "authors": [ "Artur Janc", "Mike West" ],
+      "date": "2018-05-16"
+    },
+    "cross-origin-embedder-policy": {
+      "href": "https://wicg.github.io/cross-origin-embedder-policy/",
+      "title": "Cross-Origin Embedder Policy",
+      "authors": [ "Mike West" ],
+      "date": "2020-09-29"
+    },
+    "cross-origin-opener-policy-explainer": {
+      "href": "https://docs.google.com/document/d/1Ey3MXcLzwR1T7aarkpBXEwP7jKdd2NvQdgYvF8_8scI/edit",
+      "title": "Cross-Origin-Opener-Policy Explainer",
+      "authors": [ "Charlie Reis", "Camille Lamy" ],
+      "date": "2020-05-24"
+    },
+    "safely-reviving-shared-memory": {
+      "href": "https://hacks.mozilla.org/2020/07/safely-reviving-shared-memory/",
+      "title": "Safely reviving shared memory",
+      "authors": [ "Anne van Kesteren" ],
+      "date": "2020-07-21"
+    },
+    "coi-threat-model": {
+      "href": "https://arturjanc.com/coi-threat-model.pdf",
+      "title": "Notes on the threat model of cross-origin isolation",
+      "authors": [ "Artur Janc" ],
+      "date": "2020-12"
     }
 }
 </pre>
@@ -84,25 +135,62 @@ spec:html; type:method; text:postMessage(message, options)
 Introduction {#intro}
 =====================
 
-In early 2018, [[Spectre]] made it clear that a foundational security boundary the web aimed to
-maintain was substantially less robust than expected. This revelation has pushed web browsers to
-shift their focus from the platform-level [=origin=] boundary to a hardware-level process boundary.
-Chromium's threat model, for instance, now asserts that "active web content … will be able to read
-any and all data in the address space of the process that hosts it" [[post-spectre-rethink]]. This
-shift in thinking imposes a shift in development practice, both for browser vendors, and for web
-developers. Browsers need to align the origin boundary with the process boundary through refactoring
-projects like Chromium's [[Site-Isolation]] and Firefox's [[Project-Fission]]. Moreover, browsers
-must provide web developers with tools to mitigate risk in the short term, and should push the
-platform towards safe default behaviors in the long term. The bad news is that this is going to be a
-lot of work, much of it falling on the shoulders of web developers. The good news is that a
-reasonable set of mitigation primitives exists today, ready and waiting for use.
+In early 2018, Spectre made it clear that a foundational security boundary the web aimed to
+maintain was substantially less robust than expected. [[SPECTRE]] This revelation has pushed web
+browsers to shift their focus from the platform-level [=origin=] boundary to a hardware-level
+process boundary. Chromium's threat model, for instance, now asserts that "active web content …
+will be able to read any and all data in the address space of the process that hosts it".
+[[POST-SPECTRE-RETHINK]] This shift in thinking imposes a shift in development practice, both
+for browser vendors, and for web developers. Browsers need to align the origin boundary with the
+process boundary through fundamental refactoring projects (for example, [[SITE-ISOLATION]] and
+[[PROJECT-FISSION]]). Moreover, browsers must provide web developers with tools to mitigate risk
+in the short term, and should push the platform towards safe default behaviors in the long term.
+The bad news is that this is going to be a lot of work, much of it falling on the shoulders of
+web developers. The good news is that a reasonable set of mitigation primitives exists today,
+ready and waiting for use.
 
 This document will summarize the threat model which the Web Application Security Working group
-espouses, point to a set of mitigations which seem promising, and provide concrete recommendations
+espouses(?), point to a set of mitigations which seem promising, and provide concrete recommendations
 for developers responsible for protecting users' data.
 
+ISSUE: Propose this to WebAppSec.
+
+Threat Model {#threat-model}
+----------------------------
+
+Spectre-like side-channel attacks inexorably lead to a model in which active web content
+(JavaScript, WASM, probably CSS if we tried hard enough, and so on) can read any and all data which
+has entered the address space of the process which hosts it. While this has deep implications for
+user agent implementations' internal hardening strategies (stack canaries, ASLR, etc), here we'll
+remain focused on the core implication at the web platform level, which is both simple and profound:
+any data which flows into an origin's process is legible to that origin. We must design accordingly.
+
+In order to determine the scope of data that can be assumed accessible to an attacker, we must make
+a few assumptions about the normally-not-web-exposed process model which the user agent implements.
+The following seems like a good place to start:
+
+1.  User agents are capable of segregating the execution of attacker-provided code from the agent's
+    core. That is, it remains possible for the agent to take actions which are not associated with
+    any given origin, and for those actions to remain invisible to every origin.
+
+2.  User agents are able to make decisions about whether or not a given resource should be delivered
+    to an origin's process based on characteristics of both the request and the response (headers,
+    etc).
+
+3.  User agents cannot yet consistently seperate framed origins into processes distinct from their
+    embedders' origin.
+    
+    Note: Though some user agents support out-of-process frames, no agent supports it consistently
+    across a broad range of devices and platforms. Ideally this will change over time, as the
+    frame boundary *ought* to be one we can eventually consider robust.
+
+With this in mind, our general assumption will be that an origin gains access to any resource which
+it renders (including images, stylesheets, scripts, frames, etc).
+
+ISSUE: [[COI-THREAT-MODEL]] spells out more implications. Bring them in here for more nuance.
+
 TL;DR {#tldr}
-============
+-------------
 
 1.  **Restrict attackers' ability to load your data as a subresource** by setting a
     [=cross-origin resource policy=] (CORP). In the best case, you can default to a restrictive
@@ -121,7 +209,7 @@ TL;DR {#tldr}
 4.  **Prevent MIME-type confusion attacks** by setting `X-Content-Type-Options: nosniff` on all
     your responses.
 
-ISSUE: Actually write up a threat model and describe mitigations, swiping liberally from
+ISSUE: Actually describe mitigations, swiping liberally from
 <a href="https://docs.google.com/document/d/1JBUaX1xSOZRxBk5bRNZWgnzyJoCQC52TIRokACBSmGc/edit?resourcekey=0-cZ7da6v52enjwRSsp_tLyQ">Notes on the threat model of _cross-origin isolation_</a>,
 <a href="https://docs.google.com/document/d/1zDlfvfTJ_9e8Jdc8ehuV4zMEu9ySMCiTGMS9y0GU92k/edit">Safely reviving shared memory</a>, etc.
 
@@ -138,7 +226,8 @@ cannot contain interesting information that an attacker couldn't otherwise obtai
 to making these resources widely available, and value in allowing embedders to robustly debug, so
 something like the following response headers could be appropriate:
 
-<pre class="lang-http">
+<pre highlight="http">
+HTTP/1.1 200 OK
 Access-Control-Allow-Origin: *
 Cross-Origin-Resource-Policy: cross-origin
 Timing-Allow-Origin: *
@@ -301,9 +390,9 @@ windows that retain an opener relationship.
 
 Federated sign-in forms and payment providers are clear examples of documents which intend to be
 opened by cross-origin windows, and require that relationship to be maintained in order to
-facilitate communication via channels like {{Window/postMessage()}} or navigation. These documents
-cannot isolate themselves completely, but can prevent themselves from being embedded or fetched
-cross-origin. Three scenarios are worth considering:
+facilitate communication via channels like {{Window/postMessage(message, options)}} or navigation.
+These documents cannot isolate themselves completely, but can prevent themselves from being embedded
+or fetched cross-origin. Three scenarios are worth considering:
 
 1.  Documents that only wish to be opened in cross-origin popups could loosen their cross-origin
     opener policy by serving the following headers:
@@ -362,3 +451,15 @@ cross-origin. Three scenarios are worth considering:
     For example:
 
     *   ISSUE: Find some links.
+
+Acknowledgements {#acks}
+========================
+
+This document relies upon a number of excellent resources that spell out much of the foundation
+of our understanding of Spectre's implications for the web, and justify the mitigation strategies
+we currently espouse. The following is an incomplete list of those works:
+
+[[APPLICATION-PRINCIPALS]], [[LONG-TERM-MITIGATIONS]], [[SPECTRE-SHAPED-WEB]],
+[[POST-SPECTRE-RETHINK]], [[SPILLING-THE-BEANS]], [[CROSS-ORIGIN-EMBEDDER-POLICY]],
+[[CROSS-ORIGIN-OPENER-POLICY-EXPLAINER]], [[COOP-COEP-EXPLAINED]],
+[[SAFELY-REVIVING-SHARED-MEMORY]], [[COI-THREAT-MODEL]]
