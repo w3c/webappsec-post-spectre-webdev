@@ -1486,7 +1486,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version c5172e83, updated Fri Nov 20 15:35:20 2020 -0800" name="generator">
   <link href="https://mikewest.github.io/post-spectre-webdev/" rel="canonical">
-  <meta content="ce8b4ea16297e163777fa8761db9494f4ffdba7f" name="document-revision">
+  <meta content="dacd09ff803c8e9e3bf8d1c3ab609740dd21ed0c" name="document-revision">
 <style>/* style-autolinks */
 
 .css.css, .property.property, .descriptor.descriptor {
@@ -2136,7 +2136,7 @@ for developers responsible for protecting users' data.</p>
 has entered the address space of the process which hosts it. While this has deep implications for
 user agent implementations' internal hardening strategies (stack canaries, ASLR, etc), here we’ll
 remain focused on the core implication at the web platform level, which is both simple and profound:
-any data which flows into an origin’s process is legible to that origin. We must design accordingly.</p>
+any data which flows into an origin’s process is legible to that origin. We m)ust design accordingly.</p>
    <p>In order to determine the scope of data that can be assumed accessible to an attacker, we must make
 a few assumptions about the normally-not-web-exposed process model which the user agent implements.
 The following seems like a good place to start:</p>
@@ -2162,19 +2162,18 @@ it renders (including images, stylesheets, scripts, frames, etc).</p>
    <h3 class="heading settled" data-level="1.2" id="tldr"><span class="secno">1.2. </span><span class="content">TL;DR</span><a class="self-link" href="#tldr"></a></h3>
    <ol>
     <li data-md>
-     <p><strong>Restrict attackers' ability to load your data as a subresource</strong> by setting a <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#http-cross-origin-resource-policy" id="ref-for-http-cross-origin-resource-policy">cross-origin resource policy</a> (CORP). In the best case, you can default to a restrictive <code>same-origin</code> value, opening up to <code>same-site</code> or <code>cross-origin</code> only in cases where you expect
-the resource to be used beyond your origin.</p>
+     <p><strong>Restrict attackers' ability to load your data as a subresource</strong> by setting a <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#http-cross-origin-resource-policy" id="ref-for-http-cross-origin-resource-policy">cross-origin resource policy</a> (CORP) (default to <code>same-origin</code>, opening up to <code>same-site</code> or <code>cross-origin</code> only when necessary), and by making good decisions about when to enable access
+via CORS.</p>
     <li data-md>
      <p><strong>Restrict attackers' ability to frame your data as a document</strong> by opt-ing into framing
-protections via <code>X-Frame-Options: SAMEORIGIN</code> or CSP’s more granular <a data-link-type="dfn" href="https://w3c.github.io/webappsec-csp/#frame-ancestors" id="ref-for-frame-ancestors">frame-ancestors</a> directive.</p>
+protections via <code>X-Frame-Options: SAMEORIGIN</code> or CSP’s more granular <a data-link-type="dfn" href="https://w3c.github.io/webappsec-csp/#frame-ancestors" id="ref-for-frame-ancestors">frame-ancestors</a> directive (<code>frame-ancestors 'self' https://trusted.embedder</code>, for example).</p>
     <li data-md>
      <p><strong>Restrict attackers' ability to obtain a handle to your window</strong> by setting a <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/origin.html#cross-origin-opener-policies" id="ref-for-cross-origin-opener-policies">cross-origin opener policy</a> (COOP). In the best case, you can default to a restrictive <code>same-origin</code> value, opening up to <code>same-origin-allow-popups</code> or <code>unsafe-none</code> only if
 necessary.</p>
     <li data-md>
-     <p><strong>Prevent MIME-type confusion attacks</strong> by setting <code>X-Content-Type-Options: nosniff</code> on all
-your responses.</p>
+     <p><strong>Prevent MIME-type confusion attacks</strong> and increase the robustness of passive defenses like <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#corb" id="ref-for-corb">cross-origin read blocking</a> (CORB) / <a href="https://github.com/annevk/orb">opaque response blocking</a> (<a data-link-type="biblio" href="#biblio-orb">[ORB]</a>) by setting <code>X-Content-Type-Options: nosniff</code> on all your responses.</p>
    </ol>
-   <p class="issue" id="issue-32803971"><a class="self-link" href="#issue-32803971"></a> Actually describe mitigations, swiping liberally from <a href="https://docs.google.com/document/d/1JBUaX1xSOZRxBk5bRNZWgnzyJoCQC52TIRokACBSmGc/edit?resourcekey=0-cZ7da6v52enjwRSsp_tLyQ">Notes on the threat model of _cross-origin isolation_</a>, <a href="https://docs.google.com/document/d/1zDlfvfTJ_9e8Jdc8ehuV4zMEu9ySMCiTGMS9y0GU92k/edit">Safely reviving shared memory</a>, etc.</p>
+   <p class="issue" id="issue-26c425e2"><a class="self-link" href="#issue-26c425e2"></a> Actually describe mitigations, swiping liberally from <a href="https://docs.google.com/document/d/1JBUaX1xSOZRxBk5bRNZWgnzyJoCQC52TIRokACBSmGc/edit?resourcekey=0-cZ7da6v52enjwRSsp_tLyQ">Notes on the threat model of <em>cross-origin isolation</em></a>, <a href="https://docs.google.com/document/d/1zDlfvfTJ_9e8Jdc8ehuV4zMEu9ySMCiTGMS9y0GU92k/edit">Safely reviving shared memory</a>, etc.</p>
    <h2 class="heading settled" data-level="2" id="examples"><span class="secno">2. </span><span class="content">Practical Examples</span><a class="self-link" href="#examples"></a></h2>
    <h3 class="heading settled" data-level="2.1" id="subresources"><span class="secno">2.1. </span><span class="content">Subresources</span><a class="self-link" href="#subresources"></a></h3>
    <h4 class="heading settled" data-level="2.1.1" id="static-subresources"><span class="secno">2.1.1. </span><span class="content">Static Subresources</span><a class="self-link" href="#static-subresources"></a></h4>
@@ -2182,11 +2181,10 @@ your responses.</p>
 cannot contain interesting information that an attacker couldn’t otherwise obtain. There’s no risk
 to making these resources widely available, and value in allowing embedders to robustly debug, so
 something like the following response headers could be appropriate:</p>
-<pre class="highlight"><c- kr>HTTP</c-><c- o>/</c-><c- m>1.1</c-> <c- m>200</c-> <c- ne>OK</c->
-<c- e>Access-Control-Allow-Origin</c-><c- o>:</c-> <c- l>*</c->
-<c- e>Cross-Origin-Resource-Policy</c-><c- o>:</c-> <c- l>cross-origin</c->
-<c- e>Timing-Allow-Origin</c-><c- o>:</c-> <c- l>*</c->
-<c- e>X-Content-Type-Options</c-><c- o>:</c-> <c- l>nosniff</c->
+<pre class="highlight">Access-Control-Allow-Origin: *
+Cross-Origin-Resource-Policy: cross-origin
+Timing-Allow-Origin: *
+X-Content-Type-Options: nosniff
 </pre>
    <p>(Given these resources' characteristics, there’s little risk in allowing them to be embedded in
 frames, but likely also little value. Unless there’s a good reason to allow framing these
@@ -2534,6 +2532,12 @@ we currently espouse. The following is an incomplete list of those works:</p>
     <li><a href="#ref-for-sec-sharedarraybuffer-objects">2.2.1. Fully-Isolated Documents</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-corb">
+   <a href="https://fetch.spec.whatwg.org/#corb">https://fetch.spec.whatwg.org/#corb</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-corb">1.2. TL;DR</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-http-cross-origin-resource-policy">
    <a href="https://fetch.spec.whatwg.org/#http-cross-origin-resource-policy">https://fetch.spec.whatwg.org/#http-cross-origin-resource-policy</a><b>Referenced in:</b>
    <ul>
@@ -2573,6 +2577,7 @@ we currently espouse. The following is an incomplete list of those works:</p>
    <li>
     <a data-link-type="biblio">[FETCH]</a> defines the following terms:
     <ul>
+     <li><span class="dfn-paneled" id="term-for-corb">cross-origin read blocking</span>
      <li><span class="dfn-paneled" id="term-for-http-cross-origin-resource-policy">cross-origin resource policy</span>
     </ul>
    <li>
@@ -2609,6 +2614,8 @@ we currently espouse. The following is an incomplete list of those works:</p>
    <dd>Charlie Reis; Camille Lamy. <a href="https://docs.google.com/document/d/1Ey3MXcLzwR1T7aarkpBXEwP7jKdd2NvQdgYvF8_8scI/edit">Cross-Origin-Opener-Policy Explainer</a>. 2020-05-24. URL: <a href="https://docs.google.com/document/d/1Ey3MXcLzwR1T7aarkpBXEwP7jKdd2NvQdgYvF8_8scI/edit">https://docs.google.com/document/d/1Ey3MXcLzwR1T7aarkpBXEwP7jKdd2NvQdgYvF8_8scI/edit</a>
    <dt id="biblio-long-term-mitigations">[LONG-TERM-MITIGATIONS]
    <dd>Charlie Reis. <a href="https://docs.google.com/document/d/1dnUjxfGWnvhQEIyCZb0F2LmCZ9gio6ogu2rhMGqi6gY/edit">Long-Term Web Browser Mitigations for Spectre</a>. 2019-03-04. URL: <a href="https://docs.google.com/document/d/1dnUjxfGWnvhQEIyCZb0F2LmCZ9gio6ogu2rhMGqi6gY/edit">https://docs.google.com/document/d/1dnUjxfGWnvhQEIyCZb0F2LmCZ9gio6ogu2rhMGqi6gY/edit</a>
+   <dt id="biblio-orb">[ORB]
+   <dd>Anne van Kesteren. <a href="https://github.com/annevk/orb">Opaque Response Blocking (ORB, aka CORB++)</a>. URL: <a href="https://github.com/annevk/orb">https://github.com/annevk/orb</a>
    <dt id="biblio-post-spectre-rethink">[POST-SPECTRE-RETHINK]
    <dd>Chromium. <a href="https://chromium.googlesource.com/chromium/src/+/master/docs/security/side-channel-threat-model.md">Post-Spectre Threat Model Re-Think</a>. URL: <a href="https://chromium.googlesource.com/chromium/src/+/master/docs/security/side-channel-threat-model.md">https://chromium.googlesource.com/chromium/src/+/master/docs/security/side-channel-threat-model.md</a>
    <dt id="biblio-project-fission">[PROJECT-FISSION]
@@ -2630,7 +2637,7 @@ we currently espouse. The following is an incomplete list of those works:</p>
   <div style="counter-reset:issue">
    <div class="issue"> Propose this to WebAppSec.<a href="#issue-bdf75540"> ↵ </a></div>
    <div class="issue"> <a data-link-type="biblio" href="#biblio-coi-threat-model">[COI-THREAT-MODEL]</a> spells out more implications. Bring them in here for more nuance.<a href="#issue-340f57a5"> ↵ </a></div>
-   <div class="issue"> Actually describe mitigations, swiping liberally from <a href="https://docs.google.com/document/d/1JBUaX1xSOZRxBk5bRNZWgnzyJoCQC52TIRokACBSmGc/edit?resourcekey=0-cZ7da6v52enjwRSsp_tLyQ">Notes on the threat model of _cross-origin isolation_</a>, <a href="https://docs.google.com/document/d/1zDlfvfTJ_9e8Jdc8ehuV4zMEu9ySMCiTGMS9y0GU92k/edit">Safely reviving shared memory</a>, etc.<a href="#issue-32803971"> ↵ </a></div>
+   <div class="issue"> Actually describe mitigations, swiping liberally from <a href="https://docs.google.com/document/d/1JBUaX1xSOZRxBk5bRNZWgnzyJoCQC52TIRokACBSmGc/edit?resourcekey=0-cZ7da6v52enjwRSsp_tLyQ">Notes on the threat model of <em>cross-origin isolation</em></a>, <a href="https://docs.google.com/document/d/1zDlfvfTJ_9e8Jdc8ehuV4zMEu9ySMCiTGMS9y0GU92k/edit">Safely reviving shared memory</a>, etc.<a href="#issue-26c425e2"> ↵ </a></div>
    <div class="issue"> Does <code>Content-Disposition</code> make any sense? <a href="https://github.com/mikewest/post-spectre-webdev/issues/1">&lt;https://github.com/mikewest/post-spectre-webdev/issues/1></a><a href="#issue-830682a1"> ↵ </a></div>
    <div class="issue"> Find some links.<a href="#issue-94179e25"> ↵ </a></div>
    <div class="issue"> Find some links.<a href="#issue-94179e25①"> ↵ </a></div>

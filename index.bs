@@ -20,6 +20,7 @@ urlPrefix: https://html.spec.whatwg.org/; spec: HTML; type: dfn
     text: cross-origin embedder policy; url: multipage/origin.html#coep
 urlPrefix: https://fetch.spec.whatwg.org/; spec: FETCH; type: dfn
     text: cross-origin resource policy; url: #http-cross-origin-resource-policy
+    text: cross-origin read blocking; url: #corb
 urlPrefix: https://tc39.es/ecma262/; spec: ECMA262; type: interface
     text: SharedArrayBuffer; url: #sec-sharedarraybuffer-objects
 </pre>
@@ -128,6 +129,11 @@ urlPrefix: https://tc39.es/ecma262/; spec: ECMA262; type: interface
       "title": "Notes on the threat model of cross-origin isolation",
       "authors": [ "Artur Janc" ],
       "date": "2020-12"
+    },
+    "orb": {
+      "href": "https://github.com/annevk/orb",
+      "title": "Opaque Response Blocking (ORB, aka CORB++)",
+      "authors": [ "Anne van Kesteren" ]
     }
 }
 </pre>
@@ -163,7 +169,7 @@ Spectre-like side-channel attacks inexorably lead to a model in which active web
 has entered the address space of the process which hosts it. While this has deep implications for
 user agent implementations' internal hardening strategies (stack canaries, ASLR, etc), here we'll
 remain focused on the core implication at the web platform level, which is both simple and profound:
-any data which flows into an origin's process is legible to that origin. We must design accordingly.
+any data which flows into an origin's process is legible to that origin. We m)ust design accordingly.
 
 In order to determine the scope of data that can be assumed accessible to an attacker, we must make
 a few assumptions about the normally-not-web-exposed process model which the user agent implements.
@@ -193,24 +199,26 @@ TL;DR {#tldr}
 -------------
 
 1.  **Restrict attackers' ability to load your data as a subresource** by setting a
-    [=cross-origin resource policy=] (CORP). In the best case, you can default to a restrictive
-    `same-origin` value, opening up to `same-site` or `cross-origin` only in cases where you expect
-    the resource to be used beyond your origin.
+    [=cross-origin resource policy=] (CORP) (default to `same-origin`, opening up to `same-site`
+    or `cross-origin` only when necessary), and by making good decisions about when to enable access
+    via CORS. 
 
 2.  **Restrict attackers' ability to frame your data as a document** by opt-ing into framing
     protections via `X-Frame-Options: SAMEORIGIN` or CSP's more granular [=frame-ancestors=]
-    directive.
+    directive (`frame-ancestors 'self' https://trusted.embedder`, for example).
 
 3.  **Restrict attackers' ability to obtain a handle to your window** by setting a
     [=cross-origin opener policy=] (COOP). In the best case, you can default to a restrictive
     `same-origin` value, opening up to `same-origin-allow-popups` or `unsafe-none` only if
     necessary.
 
-4.  **Prevent MIME-type confusion attacks** by setting `X-Content-Type-Options: nosniff` on all
-    your responses.
+4.  **Prevent MIME-type confusion attacks** and increase the robustness of passive defenses like
+    [=cross-origin read blocking=] (CORB) /
+    <a href="https://github.com/annevk/orb">opaque response blocking</a> ([[ORB]]) by setting
+    `X-Content-Type-Options: nosniff` on all your responses.
 
 ISSUE: Actually describe mitigations, swiping liberally from
-<a href="https://docs.google.com/document/d/1JBUaX1xSOZRxBk5bRNZWgnzyJoCQC52TIRokACBSmGc/edit?resourcekey=0-cZ7da6v52enjwRSsp_tLyQ">Notes on the threat model of _cross-origin isolation_</a>,
+<a href="https://docs.google.com/document/d/1JBUaX1xSOZRxBk5bRNZWgnzyJoCQC52TIRokACBSmGc/edit?resourcekey=0-cZ7da6v52enjwRSsp_tLyQ">Notes on the threat model of *cross-origin isolation*</a>,
 <a href="https://docs.google.com/document/d/1zDlfvfTJ_9e8Jdc8ehuV4zMEu9ySMCiTGMS9y0GU92k/edit">Safely reviving shared memory</a>, etc.
 
 Practical Examples {#examples}
@@ -227,7 +235,6 @@ to making these resources widely available, and value in allowing embedders to r
 something like the following response headers could be appropriate:
 
 <pre highlight="http">
-HTTP/1.1 200 OK
 Access-Control-Allow-Origin: *
 Cross-Origin-Resource-Policy: cross-origin
 Timing-Allow-Origin: *
