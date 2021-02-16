@@ -1486,7 +1486,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version c5172e83, updated Fri Nov 20 15:35:20 2020 -0800" name="generator">
   <link href="https://mikewest.github.io/post-spectre-webdev/" rel="canonical">
-  <meta content="3d135afb6a42b166bd61ec8293702b1b8fee38f7" name="document-revision">
+  <meta content="ce8b4ea16297e163777fa8761db9494f4ffdba7f" name="document-revision">
 <style>/* style-autolinks */
 
 .css.css, .property.property, .descriptor.descriptor {
@@ -2230,6 +2230,7 @@ Content-Disposition: attachment; filename=file.name
 prevent attackers from loading this as a <code>no-cors</code> subresource in a cross-origin document. <code>X-Frame-Options</code> and <code>Cross-Origin-Opener-Policy</code> further restrict attackers' ability to frame
 this subresource, or open it in a window they might retain access to. <code>Content-Disposition</code> prevents some browsers from commiting this file as a document at all, prompting instead for
 permission to download the contents.</p>
+     <p class="issue" id="issue-830682a1"><a class="self-link" href="#issue-830682a1"></a> Does <code>Content-Disposition</code> make any sense? <a href="https://github.com/mikewest/post-spectre-webdev/issues/1">&lt;https://github.com/mikewest/post-spectre-webdev/issues/1></a></p>
      <p>For example, examine the headers returned when requesting endpoints like the following:</p>
      <ul>
       <li data-md>
@@ -2630,6 +2631,7 @@ we currently espouse. The following is an incomplete list of those works:</p>
    <div class="issue"> Propose this to WebAppSec.<a href="#issue-bdf75540"> ↵ </a></div>
    <div class="issue"> <a data-link-type="biblio" href="#biblio-coi-threat-model">[COI-THREAT-MODEL]</a> spells out more implications. Bring them in here for more nuance.<a href="#issue-340f57a5"> ↵ </a></div>
    <div class="issue"> Actually describe mitigations, swiping liberally from <a href="https://docs.google.com/document/d/1JBUaX1xSOZRxBk5bRNZWgnzyJoCQC52TIRokACBSmGc/edit?resourcekey=0-cZ7da6v52enjwRSsp_tLyQ">Notes on the threat model of _cross-origin isolation_</a>, <a href="https://docs.google.com/document/d/1zDlfvfTJ_9e8Jdc8ehuV4zMEu9ySMCiTGMS9y0GU92k/edit">Safely reviving shared memory</a>, etc.<a href="#issue-32803971"> ↵ </a></div>
+   <div class="issue"> Does <code>Content-Disposition</code> make any sense? <a href="https://github.com/mikewest/post-spectre-webdev/issues/1">&lt;https://github.com/mikewest/post-spectre-webdev/issues/1></a><a href="#issue-830682a1"> ↵ </a></div>
    <div class="issue"> Find some links.<a href="#issue-94179e25"> ↵ </a></div>
    <div class="issue"> Find some links.<a href="#issue-94179e25①"> ↵ </a></div>
    <div class="issue"> Find some links.<a href="#issue-94179e25②"> ↵ </a></div>

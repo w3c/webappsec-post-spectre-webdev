@@ -276,6 +276,8 @@ in question. A few cases are well worth considering:
     this subresource, or open it in a window they might retain access to. `Content-Disposition`
     prevents some browsers from commiting this file as a document at all, prompting instead for
     permission to download the contents.
+
+    ISSUE(mikewest/post-spectre-webdev#1): Does `Content-Disposition` make any sense?
     
     For example, examine the headers returned when requesting endpoints like the following:
     
