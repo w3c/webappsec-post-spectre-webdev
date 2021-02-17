@@ -1486,7 +1486,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version c5172e83, updated Fri Nov 20 15:35:20 2020 -0800" name="generator">
   <link href="https://mikewest.github.io/post-spectre-webdev/" rel="canonical">
-  <meta content="dacd09ff803c8e9e3bf8d1c3ab609740dd21ed0c" name="document-revision">
+  <meta content="ed11a2d628efeb89c6b15fe0bc31751f3af90475" name="document-revision">
 <style>/* style-autolinks */
 
 .css.css, .property.property, .descriptor.descriptor {
@@ -2043,7 +2043,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Post-Spectre Web Development</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">A Collection of Interesting Ideas, <time class="dt-updated" datetime="2021-02-16">16 February 2021</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">A Collection of Interesting Ideas, <time class="dt-updated" datetime="2021-02-17">17 February 2021</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -2058,7 +2058,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
    <div data-fill-with="warning"></div>
    <p class="copyright" data-fill-with="copyright"><a href="http://creativecommons.org/publicdomain/zero/1.0/" rel="license"><img alt="CC0" src="https://licensebuttons.net/p/zero/1.0/80x15.png"></a> To the extent possible under law, the editors have waived all copyright
 and related or neighboring rights to this work.
-In addition, as of 16 February 2021,
+In addition, as of 17 February 2021,
 the editors have made this specification available under the <a href="http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0" rel="license">Open Web Foundation Agreement Version 1.0</a>,
 which is available at http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0.
 Parts of this work may be from another specification document.  If so, those parts are instead covered by the license of that specification document. </p>
@@ -2149,6 +2149,10 @@ any given origin, and for those actions to remain invisible to every origin.</p>
      <p>User agents are able to make decisions about whether or not a given resource should be delivered
 to an origin’s process based on characteristics of both the request and the response (headers,
 etc).</p>
+    <li data-md>
+     <p>User agents can consistently separate top-level, cross-origin windows into distinct processes.
+They cannot consistently separate same-site or same-origin windows into distinct processes given
+the potential for synchronous access between the windows.</p>
     <li data-md>
      <p>User agents cannot yet consistently seperate framed origins into processes distinct from their
 embedders' origin.</p>

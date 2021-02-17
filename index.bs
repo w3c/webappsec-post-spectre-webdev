@@ -183,7 +183,11 @@ The following seems like a good place to start:
     to an origin's process based on characteristics of both the request and the response (headers,
     etc).
 
-3.  User agents cannot yet consistently seperate framed origins into processes distinct from their
+3.  User agents can consistently separate top-level, cross-origin windows into distinct processes.
+    They cannot consistently separate same-site or same-origin windows into distinct processes given
+    the potential for synchronous access between the windows.
+
+4.  User agents cannot yet consistently seperate framed origins into processes distinct from their
     embedders' origin.
     
     Note: Though some user agents support out-of-process frames, no agent supports it consistently
