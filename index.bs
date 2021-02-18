@@ -134,6 +134,11 @@ urlPrefix: https://tc39.es/ecma262/; spec: ECMA262; type: interface
       "href": "https://github.com/annevk/orb",
       "title": "Opaque Response Blocking (ORB, aka CORB++)",
       "authors": [ "Anne van Kesteren" ]
+    },
+    "oopif": {
+      "href": "https://www.chromium.org/developers/design-documents/oop-iframes",
+      "title": "Out-of-Process iframes (OOPIFs)",
+      "authors": [ "Chromium" ]
     }
 }
 </pre>
@@ -190,12 +195,13 @@ The following seems like a good place to start:
 4.  User agents cannot yet consistently seperate framed origins into processes distinct from their
     embedders' origin.
     
-    Note: Though some user agents support out-of-process frames, no agent supports it consistently
-    across a broad range of devices and platforms. Ideally this will change over time, as the
-    frame boundary *ought* to be one we can eventually consider robust.
+    Note: Though some user agents support out-of-process frames [[OOPIF]], no agent supports it
+    consistently across a broad range of devices and platforms. Ideally this will change over time,
+    as the frame boundary *must* be one we can eventually consider robust.
 
 With this in mind, our general assumption will be that an origin gains access to any resource which
-it renders (including images, stylesheets, scripts, frames, etc).
+it renders (including images, stylesheets, scripts, frames, etc). Likewise, embedded frames gain
+access to their ancestors' content.
 
 ISSUE: [[COI-THREAT-MODEL]] spells out more implications. Bring them in here for more nuance.
 
