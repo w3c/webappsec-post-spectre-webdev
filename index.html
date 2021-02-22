@@ -1486,7 +1486,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version c5172e83, updated Fri Nov 20 15:35:20 2020 -0800" name="generator">
   <link href="https://mikewest.github.io/post-spectre-webdev/" rel="canonical">
-  <meta content="65262d0a128165f7a5deaa06308476effff82a10" name="document-revision">
+  <meta content="eea6a15dec8c901953475ce68e0c899cb702d5db" name="document-revision">
 <style>/* style-autolinks */
 
 .css.css, .property.property, .descriptor.descriptor {
@@ -2098,7 +2098,12 @@ Parts of this work may be from another specification document.  If so, those par
         <li><a href="#documents-as-popups"><span class="secno">2.2.3</span> <span class="content">Documents Expecting Cross-Origin Openers</span></a>
        </ol>
      </ol>
-    <li><a href="#acks"><span class="secno">3</span> <span class="content">Acknowledgements</span></a>
+    <li>
+     <a href="#considerations"><span class="secno">3</span> <span class="content">Implementation Considerations</span></a>
+     <ol class="toc">
+      <li><a href="#explicit-defaults"><span class="secno">3.1</span> <span class="content">Explicitly Setting Headers with Default Values</span></a>
+     </ol>
+    <li><a href="#acks"><span class="secno">4</span> <span class="content">Acknowledgements</span></a>
     <li>
      <a href="#index"><span class="secno"></span> <span class="content">Index</span></a>
      <ol class="toc">
@@ -2388,7 +2393,19 @@ X-Content-Type-Options: nosniff
        <p class="issue" id="issue-94179e25②"><a class="self-link" href="#issue-94179e25②"></a> Find some links.</p>
      </ul>
    </ol>
-   <h2 class="heading settled" data-level="3" id="acks"><span class="secno">3. </span><span class="content">Acknowledgements</span><a class="self-link" href="#acks"></a></h2>
+   <h2 class="heading settled" data-level="3" id="considerations"><span class="secno">3. </span><span class="content">Implementation Considerations</span><a class="self-link" href="#considerations"></a></h2>
+   <h3 class="heading settled" data-level="3.1" id="explicit-defaults"><span class="secno">3.1. </span><span class="content">Explicitly Setting Headers with Default Values</span><a class="self-link" href="#explicit-defaults"></a></h3>
+   <p>Several recommendations above suggest that developers would be well-served to set headers like <code>X-Frame-Options: ALLOWALL</code> or <code>Cross-Origin-Opener-Policy: unsafe-none</code> on responses. These
+map to the web’s status quo behavior, and seem therefore superfluous. Why should developers
+set them?</p>
+   <p>The core reason is that these defaults are poor fits for today’s threats, and we ought to be working
+to change them. Proposals like <a data-link-type="biblio" href="#biblio-embedding-requires-opt-in">[EMBEDDING-REQUIRES-OPT-IN]</a> and <a data-link-type="biblio" href="#biblio-coop-by-default">[COOP-BY-DEFAULT]</a> suggest that
+we shift the web’s defaults away from requiring developers to opt-into more secure behaviors by
+making them opt-out rather than opt-in. This would place the configuration cost on those developers
+whose projects require risky settings.</p>
+   <p>This document recommends setting those less-secure header values explicitly, as that makes it more
+likely that we’ll be able to shift the web’s defaults in the future.</p>
+   <h2 class="heading settled" data-level="4" id="acks"><span class="secno">4. </span><span class="content">Acknowledgements</span><a class="self-link" href="#acks"></a></h2>
    <p>This document relies upon a number of excellent resources that spell out much of the foundation
 of our understanding of Spectre’s implications for the web, and justify the mitigation strategies
 we currently espouse. The following is an incomplete list of those works:</p>
@@ -2609,6 +2626,8 @@ we currently espouse. The following is an incomplete list of those works:</p>
    <dd>Chris Palmer. <a href="https://noncombatant.org/application-principals/">Isolating Application-Defined Principals</a>. 2018-06-19. URL: <a href="https://noncombatant.org/application-principals/">https://noncombatant.org/application-principals/</a>
    <dt id="biblio-coi-threat-model">[COI-THREAT-MODEL]
    <dd>Artur Janc. <a href="https://arturjanc.com/coi-threat-model.pdf">Notes on the threat model of cross-origin isolation</a>. 2020-12. URL: <a href="https://arturjanc.com/coi-threat-model.pdf">https://arturjanc.com/coi-threat-model.pdf</a>
+   <dt id="biblio-coop-by-default">[COOP-BY-DEFAULT]
+   <dd>Mike West. <a href="https://github.com/mikewest/coop-by-default">COOP By Default</a>. URL: <a href="https://github.com/mikewest/coop-by-default">https://github.com/mikewest/coop-by-default</a>
    <dt id="biblio-coop-coep">[COOP-COEP]
    <dd>Eiji Kitamura. <a href="https://web.dev/coop-coep/">Making your website 'cross-origin isolated' using COOP and COEP</a>. URL: <a href="https://web.dev/coop-coep/">https://web.dev/coop-coep/</a>
    <dt id="biblio-coop-coep-explained">[COOP-COEP-EXPLAINED]
@@ -2617,6 +2636,8 @@ we currently espouse. The following is an incomplete list of those works:</p>
    <dd>Mike West. <a href="https://wicg.github.io/cross-origin-embedder-policy/">Cross-Origin Embedder Policy</a>. 2020-09-29. URL: <a href="https://wicg.github.io/cross-origin-embedder-policy/">https://wicg.github.io/cross-origin-embedder-policy/</a>
    <dt id="biblio-cross-origin-opener-policy-explainer">[CROSS-ORIGIN-OPENER-POLICY-EXPLAINER]
    <dd>Charlie Reis; Camille Lamy. <a href="https://docs.google.com/document/d/1Ey3MXcLzwR1T7aarkpBXEwP7jKdd2NvQdgYvF8_8scI/edit">Cross-Origin-Opener-Policy Explainer</a>. 2020-05-24. URL: <a href="https://docs.google.com/document/d/1Ey3MXcLzwR1T7aarkpBXEwP7jKdd2NvQdgYvF8_8scI/edit">https://docs.google.com/document/d/1Ey3MXcLzwR1T7aarkpBXEwP7jKdd2NvQdgYvF8_8scI/edit</a>
+   <dt id="biblio-embedding-requires-opt-in">[EMBEDDING-REQUIRES-OPT-IN]
+   <dd>Mike West. <a href="https://github.com/mikewest/embedding-requires-opt-in">Embedding Should Require Explicit Opt-In</a>. URL: <a href="https://github.com/mikewest/embedding-requires-opt-in">https://github.com/mikewest/embedding-requires-opt-in</a>
    <dt id="biblio-long-term-mitigations">[LONG-TERM-MITIGATIONS]
    <dd>Charlie Reis. <a href="https://docs.google.com/document/d/1dnUjxfGWnvhQEIyCZb0F2LmCZ9gio6ogu2rhMGqi6gY/edit">Long-Term Web Browser Mitigations for Spectre</a>. 2019-03-04. URL: <a href="https://docs.google.com/document/d/1dnUjxfGWnvhQEIyCZb0F2LmCZ9gio6ogu2rhMGqi6gY/edit">https://docs.google.com/document/d/1dnUjxfGWnvhQEIyCZb0F2LmCZ9gio6ogu2rhMGqi6gY/edit</a>
    <dt id="biblio-oopif">[OOPIF]

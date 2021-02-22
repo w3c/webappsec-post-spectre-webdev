@@ -139,6 +139,16 @@ urlPrefix: https://tc39.es/ecma262/; spec: ECMA262; type: interface
       "href": "https://www.chromium.org/developers/design-documents/oop-iframes",
       "title": "Out-of-Process iframes (OOPIFs)",
       "authors": [ "Chromium" ]
+    },
+    "embedding-requires-opt-in": {
+      "href": "https://github.com/mikewest/embedding-requires-opt-in",
+      "title": "Embedding Should Require Explicit Opt-In",
+      "authors": [ "Mike West" ]
+    },
+    "coop-by-default": {
+      "href": "https://github.com/mikewest/coop-by-default",
+      "title": "COOP By Default",
+      "authors": [ "Mike West" ]
     }
 }
 </pre>
@@ -450,6 +460,7 @@ or fetched cross-origin. Three scenarios are worth considering:
         Content-Security-Policy: frame-ancestors https://trusted1.example https://trusted2.example
         </pre>
     </div>
+    
 
     For example:
 
@@ -470,6 +481,27 @@ or fetched cross-origin. Three scenarios are worth considering:
     For example:
 
     *   ISSUE: Find some links.
+
+Implementation Considerations {#considerations}
+===============================================
+
+Explicitly Setting Headers with Default Values {#explicit-defaults}
+-------------------------------------------------------------------
+
+Several recommendations above suggest that developers would be well-served to set headers like
+`X-Frame-Options: ALLOWALL` or `Cross-Origin-Opener-Policy: unsafe-none` on responses. These
+map to the web's status quo behavior, and seem therefore superfluous. Why should developers
+set them?
+
+The core reason is that these defaults are poor fits for today's threats, and we ought to be working
+to change them. Proposals like [[EMBEDDING-REQUIRES-OPT-IN]] and [[COOP-BY-DEFAULT]] suggest that
+we shift the web's defaults away from requiring developers to opt-into more secure behaviors by
+making them opt-out rather than opt-in. This would place the configuration cost on those developers
+whose projects require risky settings.
+
+This document recommends setting those less-secure header values explicitly, as that makes it more
+likely that we'll be able to shift the web's defaults in the future.
+
 
 Acknowledgements {#acks}
 ========================
