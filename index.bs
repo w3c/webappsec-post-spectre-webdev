@@ -148,7 +148,7 @@ Introduction {#intro}
 
 In early 2018, Spectre made it clear that a foundational security boundary the web aimed to
 maintain was substantially less robust than expected. [[SPECTRE]] This revelation has pushed web
-browsers to shift their focus from the platform-level [=origin=] boundary to a hardware-level
+browsers to shift their focus from the platform-level [=origin=] boundary to an OS-level
 process boundary. Chromium's threat model, for instance, now asserts that "active web content …
 will be able to read any and all data in the address space of the process that hosts it".
 [[POST-SPECTRE-RETHINK]] This shift in thinking imposes a shift in development practice, both
@@ -174,7 +174,7 @@ Spectre-like side-channel attacks inexorably lead to a model in which active web
 has entered the address space of the process which hosts it. While this has deep implications for
 user agent implementations' internal hardening strategies (stack canaries, ASLR, etc), here we'll
 remain focused on the core implication at the web platform level, which is both simple and profound:
-any data which flows into an origin's process is legible to that origin. We m)ust design accordingly.
+any data which flows into an origin's process is legible to that origin. We must design accordingly.
 
 In order to determine the scope of data that can be assumed accessible to an attacker, we must make
 a few assumptions about the normally-not-web-exposed process model which the user agent implements.

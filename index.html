@@ -1486,7 +1486,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version c5172e83, updated Fri Nov 20 15:35:20 2020 -0800" name="generator">
   <link href="https://mikewest.github.io/post-spectre-webdev/" rel="canonical">
-  <meta content="b5540d7b5844f99a1e1011bcfe25f082a9df641c" name="document-revision">
+  <meta content="65262d0a128165f7a5deaa06308476effff82a10" name="document-revision">
 <style>/* style-autolinks */
 
 .css.css, .property.property, .descriptor.descriptor {
@@ -2043,7 +2043,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Post-Spectre Web Development</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">A Collection of Interesting Ideas, <time class="dt-updated" datetime="2021-02-18">18 February 2021</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">A Collection of Interesting Ideas, <time class="dt-updated" datetime="2021-02-22">22 February 2021</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -2058,7 +2058,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
    <div data-fill-with="warning"></div>
    <p class="copyright" data-fill-with="copyright"><a href="http://creativecommons.org/publicdomain/zero/1.0/" rel="license"><img alt="CC0" src="https://licensebuttons.net/p/zero/1.0/80x15.png"></a> To the extent possible under law, the editors have waived all copyright
 and related or neighboring rights to this work.
-In addition, as of 18 February 2021,
+In addition, as of 22 February 2021,
 the editors have made this specification available under the <a href="http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0" rel="license">Open Web Foundation Agreement Version 1.0</a>,
 which is available at http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0.
 Parts of this work may be from another specification document.  If so, those parts are instead covered by the license of that specification document. </p>
@@ -2117,7 +2117,7 @@ Parts of this work may be from another specification document.  If so, those par
    <h2 class="heading settled" data-level="1" id="intro"><span class="secno">1. </span><span class="content">Introduction</span><a class="self-link" href="#intro"></a></h2>
    <p>In early 2018, Spectre made it clear that a foundational security boundary the web aimed to
 maintain was substantially less robust than expected. <a data-link-type="biblio" href="#biblio-spectre">[SPECTRE]</a> This revelation has pushed web
-browsers to shift their focus from the platform-level <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/origin.html#concept-origin" id="ref-for-concept-origin">origin</a> boundary to a hardware-level
+browsers to shift their focus from the platform-level <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/origin.html#concept-origin" id="ref-for-concept-origin">origin</a> boundary to an OS-level
 process boundary. Chromium’s threat model, for instance, now asserts that "active web content …
 will be able to read any and all data in the address space of the process that hosts it". <a data-link-type="biblio" href="#biblio-post-spectre-rethink">[POST-SPECTRE-RETHINK]</a> This shift in thinking imposes a shift in development practice, both
 for browser vendors, and for web developers. Browsers need to align the origin boundary with the
@@ -2136,7 +2136,7 @@ for developers responsible for protecting users' data.</p>
 has entered the address space of the process which hosts it. While this has deep implications for
 user agent implementations' internal hardening strategies (stack canaries, ASLR, etc), here we’ll
 remain focused on the core implication at the web platform level, which is both simple and profound:
-any data which flows into an origin’s process is legible to that origin. We m)ust design accordingly.</p>
+any data which flows into an origin’s process is legible to that origin. We must design accordingly.</p>
    <p>In order to determine the scope of data that can be assumed accessible to an attacker, we must make
 a few assumptions about the normally-not-web-exposed process model which the user agent implements.
 The following seems like a good place to start:</p>
