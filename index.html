@@ -1486,7 +1486,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version c5172e83, updated Fri Nov 20 15:35:20 2020 -0800" name="generator">
   <link href="https://mikewest.github.io/post-spectre-webdev/" rel="canonical">
-  <meta content="eea6a15dec8c901953475ce68e0c899cb702d5db" name="document-revision">
+  <meta content="5a374e6133c2eed99941c402f9abd9ebae98031e" name="document-revision">
 <style>/* style-autolinks */
 
 .css.css, .property.property, .descriptor.descriptor {
@@ -2147,9 +2147,10 @@ a few assumptions about the normally-not-web-exposed process model which the use
 The following seems like a good place to start:</p>
    <ol>
     <li data-md>
-     <p>User agents are capable of segregating the execution of attacker-provided code from the agent’s
-core. That is, it remains possible for the agent to take actions which are not associated with
-any given origin, and for those actions to remain invisible to every origin.</p>
+     <p>User agents are capable of separating the execution of a web origin’s code into a process
+distinct from the agent’s core. This separation enables the agent itself to access local
+devices, fetch resources, broker cross-process communication, and so on, in a way which remains
+invisible to any process potentially hosting untrusted code.</p>
     <li data-md>
      <p>User agents are able to make decisions about whether or not a given resource should be delivered
 to an origin’s process based on characteristics of both the request and the response (headers,

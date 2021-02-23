@@ -190,9 +190,10 @@ In order to determine the scope of data that can be assumed accessible to an att
 a few assumptions about the normally-not-web-exposed process model which the user agent implements.
 The following seems like a good place to start:
 
-1.  User agents are capable of segregating the execution of attacker-provided code from the agent's
-    core. That is, it remains possible for the agent to take actions which are not associated with
-    any given origin, and for those actions to remain invisible to every origin.
+1.  User agents are capable of separating the execution of a web origin's code into a process
+    distinct from the agent's core. This separation enables the agent itself to access local
+    devices, fetch resources, broker cross-process communication, and so on, in a way which remains
+    invisible to any process potentially hosting untrusted code.
 
 2.  User agents are able to make decisions about whether or not a given resource should be delivered
     to an origin's process based on characteristics of both the request and the response (headers,
