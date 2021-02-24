@@ -14,15 +14,21 @@ Boilerplate: omit conformance
 Markup Shorthands: css off, markdown on
 </pre>
 <pre class="anchors">
-urlPrefix: https://html.spec.whatwg.org/; spec: HTML; type: dfn
-    text: origin; url: multipage/origin.html#concept-origin
-    text: cross-origin opener policy; url: multipage/origin.html#cross-origin-opener-policies
-    text: cross-origin embedder policy; url: multipage/origin.html#coep
+urlPrefix: https://html.spec.whatwg.org/; spec: HTML;
+    type: dfn
+        text: origin; url: multipage/origin.html#concept-origin
+        text: cross-origin opener policy; url: multipage/origin.html#cross-origin-opener-policies
+        text: cross-origin embedder policy; url: multipage/origin.html#coep
+    type: http-header
+        text: cross-origin-opener-policy; url: multipage/origin.html#cross-origin-opener-policies
+        text: x-frame-options; url: multipage/browsing-the-web.html#the-x-frame-options-header
 urlPrefix: https://fetch.spec.whatwg.org/; spec: FETCH; type: dfn
     text: cross-origin resource policy; url: #http-cross-origin-resource-policy
     text: cross-origin read blocking; url: #corb
 urlPrefix: https://tc39.es/ecma262/; spec: ECMA262; type: interface
     text: SharedArrayBuffer; url: #sec-sharedarraybuffer-objects
+urlPrefix: https://tools.ietf.org/html/rfc7231; spec: RFC7231; type: http-header
+    text: Vary; url: #section-7.1.4
 </pre>
 <pre class="biblio">
 {
@@ -248,6 +254,57 @@ Practical Examples {#examples}
 Subresources {#subresources}
 ----------------------------
 
+Resources which are intended to be loaded into documents should protect themselves from being used
+in unexpected ways. Before walking through strategies for specific kinds of resources, a few headers
+seem generally applicable:
+
+1.  Sites should use Fetch Metadata to make good decisions about when to serve resources, as
+    described in [[resource-isolation-policy]]. In order to ensure that decision sticks, servers
+    should explain its decision to the browser by sending a <a http-header>`Vary`</a> header
+    containing `Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site`. This ensures that the server has
+    a chance to make different decisions for requests which will be *used* differently.
+
+2.  Subresources should opt-out of MIME type sniffing by sending an
+    <a http-header>`X-Content-Type-Options`</a> header with a value of `nosniff`. This increases the
+    robustness of MIME-based checks like [=cross-origin read blocking=] (CORB) /
+    <a href="https://github.com/annevk/orb">opaque response blocking</a> ([[ORB]]), and mitigates
+    some well-known risks around type confusion for scripts.
+
+3.  Subresources are intended for inclusion in a given context, not as independently navigable
+    documents. To mitigate the risk that navigation to a subresource causes script execution or
+    opens an origin up to attack in some other way, servers can assert the following set of headers
+    which collectively make it difficult to meaningfully abuse a subresource via navigation:
+
+    *   Using the <a http-header>`Content-Security-Policy`</a> header's to assert the
+        <a>`sandbox`</a> directive ensures that these resources remain inactive if navigated to
+        directly as a top-level document. No scripts will execute, and the resource will be pushed
+        into an [=opaque origin=].
+
+        Note: Some servers deliver `Content-Disposition: attachment; filename=file.name` to obtain
+        a similar effect. This was valuable to mitigate vulnerabilies in Flash, but the sandbox
+        approach seems to more straightforwardly address the threats we care about today.
+
+    *   Asserting the <a http-header>`Cross-Origin-Opener-Policy`</a> header with a value of
+        `same-origin` prevents cross-origin documents from retaining a handle to the resource's
+        window if it's opened in a popup.
+
+    *   The <a http-header>`X-Frame-Options`</a> header with a value of `DENY` prevents the resource
+        from being framed.
+
+Most subresources, then, should contain the following block of headers, which you'll see repeated a
+few times below:    
+
+<pre highlight="http">
+Content-Security-Policy: sandbox
+Cross-Origin-Opener-Policy: same-origin
+Vary: Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site
+X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
+</pre>
+
+With these generic protections in mind, let's sift through a few scenarios to determine what headers
+a server would be well-served to assert:
+
 ### Static Subresources ### {#static-subresources}
 
 By their nature, static resources contain the same data no matter who requests them, and therefore
@@ -256,15 +313,15 @@ to making these resources widely available, and value in allowing embedders to r
 something like the following response headers could be appropriate:
 
 <pre highlight="http">
-Access-Control-Allow-Origin: *
+<strong>Access-Control-Allow-Origin: *
 Cross-Origin-Resource-Policy: cross-origin
-Timing-Allow-Origin: *
+Timing-Allow-Origin: *</strong>
+Content-Security-Policy: sandbox
+Cross-Origin-Opener-Policy: same-origin
+Vary: Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site
 X-Content-Type-Options: nosniff
+X-Frame-Options: DENY
 </pre>
-
-(Given these resources' characteristics, there's little risk in allowing them to be embedded in
-frames, but likely also little value. Unless there's a good reason to allow framing these
-subresources directly, consider also adding `X-Frame-Options: DENY`).
 
 CDNs are the canonical static resource distribution points, and many use the pattern above. Take
 a look at the following common resources' response headers for inspiration:
@@ -287,26 +344,21 @@ in question. A few cases are well worth considering:
 
 1.  Application-internal resources (private API endpoints, avatar images, uploaded data, etc.)
     should not be available to any cross-origin requestor. These resources should be restricted to
-    usage as a subresource in same-origin contexts by sending the following headers:
+    usage as a subresource in same-origin contexts by sending a
+    <a http-header>`Cross-Origin-Resource-Policy`</a> header with a value of `same-origin`:
     
-	  <pre class="lang-http">
+    <pre highlight="http">
+	  <strong>Cross-Origin-Resource-Policy: same-origin</strong>
+    Content-Security-Policy: sandbox
     Cross-Origin-Opener-Policy: same-origin
-	  Cross-Origin-Resource-Policy: same-origin
-	  Vary: Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site
-	  X-Content-Type-Options: nosniff
-	  X-Frame-Options: DENY
-    Content-Disposition: attachment; filename=file.name
+    Vary: Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site
+    X-Content-Type-Options: nosniff
+    X-Frame-Options: DENY
     </pre>
 
-    The most critical of these headers is `Cross-Origin-Resource-Policy: same-origin`, which will
-    prevent attackers from loading this as a `no-cors` subresource in a cross-origin document.
-    `X-Frame-Options` and `Cross-Origin-Opener-Policy` further restrict attackers' ability to frame
-    this subresource, or open it in a window they might retain access to. `Content-Disposition`
-    prevents some browsers from commiting this file as a document at all, prompting instead for
-    permission to download the contents.
+    This header will prevent cross-origin attackers from loading the resource as a response to a
+    `no-cors` request.
 
-    ISSUE(mikewest/post-spectre-webdev#1): Does `Content-Disposition` make any sense?
-    
     For example, examine the headers returned when requesting endpoints like the following:
     
     *   <a href="https://myaccount.google.com/_/AccountSettingsUi/browserinfo">`https://myaccount.google.com/_/AccountSettingsUi/browserinfo`</a>
@@ -318,14 +370,15 @@ in question. A few cases are well worth considering:
     safely be enabled by requiring CORS, and choosing the set of origins for which a given response
     can be exposed by setting the appropriate access-control headers, for example:
 
-    <pre class="lang-http">
-    Access-Control-Allow-Credentials: true
+    <pre highlight="http">
+    <strong>Access-Control-Allow-Credentials: true
     Access-Control-Allow-Origin: https://trusted.example
     Access-Control-Allow-Methods: POST
     Access-Control-Allow-Headers: ...
     Access-Control-Allow-...: ...
+    Cross-Origin-Resource-Policy: same-origin</strong>
+    Content-Security-Policy: sandbox
     Cross-Origin-Opener-Policy: same-origin
-    Cross-Origin-Resource-Policy: same-origin
     Vary: Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site
     X-Content-Type-Options: nosniff
     X-Frame-Options: DENY
@@ -333,8 +386,8 @@ in question. A few cases are well worth considering:
 
     Note: The `Cross-Origin-Resource-Policy` header is only processed for requests that are _not_
     using CORS for access control ("`no-cors` requests"). Sending
-    `Cross-Origin-Resource-Policy: same-origin` is therefore not harmful, and working as a solid
-    belts-and-suspenders approach to ensuring that `no-cors` usage isn't accidentally allowed.
+    `Cross-Origin-Resource-Policy: same-origin` is therefore not harmful, and works to ensure that
+    `no-cors` usage isn't accidentally allowed.
     
     For example, examine the headers returned when requesting endpoints like the following:
     
@@ -348,11 +401,13 @@ in question. A few cases are well worth considering:
     should enable cross-origin embedding via `Cross-Origin-Resource-Policy`, but _not_ via CORS
     access control headers:
 
-    <pre class="lang-http">
-    Cross-Origin-Resource-Policy: cross-origin
+    <pre highlight="http">
+    <strong>Cross-Origin-Resource-Policy: cross-origin</strong>
+    Content-Security-Policy: sandbox
+    Cross-Origin-Opener-Policy: same-origin
+    Vary: Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site
     X-Content-Type-Options: nosniff
     X-Frame-Options: DENY
-    Cross-Origin-Opener-Policy: same-origin
     </pre>
 
     For example:
@@ -372,7 +427,7 @@ by making _a priori_ decisions about whether to serve the page at all (see
 the page can be used once delivered. For instance, something like the following set of response
 headers could be appropriate:
 
-<pre class="lang-http">
+<pre highlight="http">
 Cross-Origin-Opener-Policy: same-origin
 Cross-Origin-Resource-Policy: same-origin
 Vary: Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site
@@ -400,7 +455,7 @@ but they can't easily lock themselves off from all such vectors via
 `Cross-Origin-Opener-Policy: same-origin` and `X-Frame-Options: DENY`. In these cases, something
 like the following set of response headers might be appropriate:
 
-<pre class="lang-http">
+<pre highlight="http">
 Cross-Origin-Opener-Policy: same-origin-allow-popups
 Cross-Origin-Resource-Policy: same-origin
 Vary: Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site
@@ -427,7 +482,7 @@ or fetched cross-origin. Three scenarios are worth considering:
 1.  Documents that only wish to be opened in cross-origin popups could loosen their cross-origin
     opener policy by serving the following headers:
     
-    <pre class="lang-http">
+    <pre highlight="http">
     Cross-Origin-Resource-Policy: same-origin
     <strong>Cross-Origin-Opener-Policy: unsafe-none</strong>
     Vary: Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site
@@ -442,7 +497,7 @@ or fetched cross-origin. Three scenarios are worth considering:
 2.  Documents that only wish to be framed in cross-origin contexts could loosen their framing
     protections by serving the following headers:
 
-    <pre class="lang-http">
+    <pre highlight="http">
     Cross-Origin-Resource-Policy: same-origin
     Cross-Origin-Opener-Policy: same-origin
     Vary: Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site
@@ -457,11 +512,10 @@ or fetched cross-origin. Three scenarios are worth considering:
         addition to the `X-Frame-Options` header above, the following header could also be included to
         restrict the document to a short list of trusted embedders:
 
-        <pre class="lang-http">
+        <pre highlight="http">
         Content-Security-Policy: frame-ancestors https://trusted1.example https://trusted2.example
         </pre>
     </div>
-    
 
     For example:
 
