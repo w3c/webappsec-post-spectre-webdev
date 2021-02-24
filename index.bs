@@ -410,6 +410,20 @@ in question. A few cases are well worth considering:
     X-Frame-Options: DENY
     </pre>
 
+    <div class="note">
+        Note: That this allows the resource to be used by any cross-origin document. That's
+        reasonable for some use cases, but requiring CORS, and opting-in a small set of origins via
+        appropriate access-control headers is a possible alternative for some resources. This
+        approach will give those contexts trivial access to the resource's bits, so the granularity
+        is a tradeoff. Still, considering this case to be the same as the "personalized resources
+        intended for cross-origin use" isn't unreasonable.
+
+        ISSUE(whatwg/fetch#760): If we implemented more granular bindings for CORP headers (along
+        the lines of `Cross-Origin-Resource-Policy: https://trusted.example`), we could avoid this
+        tradeoff entirely.
+    </div>
+
+
     For example:
 
     *   <a href="https://lh3.google.com/u/0/d/1JBUaX1xSOZRxBk5bRNZWgnzyJoCQC52TIRokACBSmGc=w512">`https://lh3.google.com/u/0/d/1JBUaX1xSOZRxBk5bRNZWgnzyJoCQC52TIRokACBSmGc=w512`</a>

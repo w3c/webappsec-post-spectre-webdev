@@ -1486,7 +1486,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version c5172e83, updated Fri Nov 20 15:35:20 2020 -0800" name="generator">
   <link href="https://mikewest.github.io/post-spectre-webdev/" rel="canonical">
-  <meta content="7ee71bbbfdc7683d689ec849c05faffd6e64abb2" name="document-revision">
+  <meta content="f1728a156b2f6e79f81ad195d69497cb48927e2a" name="document-revision">
 <style>/* style-autolinks */
 
 .css.css, .property.property, .descriptor.descriptor {
@@ -2333,6 +2333,17 @@ Vary: Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site
 X-Content-Type-Options: nosniff
 X-Frame-Options: DENY
 </pre>
+     <div class="note" role="note">
+       Note: That this allows the resource to be used by any cross-origin document. That’s
+    reasonable for some use cases, but requiring CORS, and opting-in a small set of origins via
+    appropriate access-control headers is a possible alternative for some resources. This
+    approach will give those contexts trivial access to the resource’s bits, so the granularity
+    is a tradeoff. Still, considering this case to be the same as the "personalized resources
+    intended for cross-origin use" isn’t unreasonable. 
+      <p class="issue" id="issue-ae9c0065"><a class="self-link" href="#issue-ae9c0065"></a> If we implemented more granular bindings for CORP headers (along
+    the lines of <code>Cross-Origin-Resource-Policy: https://trusted.example</code>), we could avoid this
+    tradeoff entirely. <a href="https://github.com/whatwg/fetch/issues/760">&lt;https://github.com/whatwg/fetch/issues/760></a></p>
+     </div>
      <p>For example:</p>
      <ul>
       <li data-md>
@@ -2778,6 +2789,9 @@ we currently espouse. The following is an incomplete list of those works:</p>
    <div class="issue"> Propose this to WebAppSec.<a href="#issue-bdf75540"> ↵ </a></div>
    <div class="issue"> <a data-link-type="biblio" href="#biblio-coi-threat-model">[COI-THREAT-MODEL]</a> spells out more implications. Bring them in here for more nuance.<a href="#issue-340f57a5"> ↵ </a></div>
    <div class="issue"> Actually describe mitigations, swiping liberally from <a href="https://docs.google.com/document/d/1JBUaX1xSOZRxBk5bRNZWgnzyJoCQC52TIRokACBSmGc/edit?resourcekey=0-cZ7da6v52enjwRSsp_tLyQ">Notes on the threat model of <em>cross-origin isolation</em></a>, <a href="https://docs.google.com/document/d/1zDlfvfTJ_9e8Jdc8ehuV4zMEu9ySMCiTGMS9y0GU92k/edit">Safely reviving shared memory</a>, etc.<a href="#issue-26c425e2"> ↵ </a></div>
+   <div class="issue"> If we implemented more granular bindings for CORP headers (along
+    the lines of <code>Cross-Origin-Resource-Policy: https://trusted.example</code>), we could avoid this
+    tradeoff entirely. <a href="https://github.com/whatwg/fetch/issues/760">&lt;https://github.com/whatwg/fetch/issues/760></a><a href="#issue-ae9c0065"> ↵ </a></div>
    <div class="issue"> Find some links.<a href="#issue-94179e25"> ↵ </a></div>
    <div class="issue"> Find some links.<a href="#issue-94179e25①"> ↵ </a></div>
    <div class="issue"> Find some links.<a href="#issue-94179e25②"> ↵ </a></div>
