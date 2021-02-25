@@ -29,6 +29,8 @@ urlPrefix: https://tc39.es/ecma262/; spec: ECMA262; type: interface
     text: SharedArrayBuffer; url: #sec-sharedarraybuffer-objects
 urlPrefix: https://tools.ietf.org/html/rfc7231; spec: RFC7231; type: http-header
     text: Vary; url: #section-7.1.4
+urlPrefix: https://fetch.spec.whatwg.org/; spec: FETCH; type: http-header
+    text: Origin; url: #origin-header
 </pre>
 <pre class="biblio">
 {
@@ -226,26 +228,29 @@ ISSUE: [[COI-THREAT-MODEL]] spells out more implications. Bring them in here for
 TL;DR {#tldr}
 -------------
 
-1.  **Restrict attackers' ability to load your data as a subresource** by setting a
-    [=cross-origin resource policy=] (CORP) (default to `same-origin`, opening up to `same-site`
-    or `cross-origin` only when necessary), and by making good decisions about when to enable access
-    via CORS. 
+1.  **Decide when (not!) to respond to requests** by examining incoming headers, paying special
+    attention to the <a http-header>`Origin`</a> header on the one hand, and various `Sec-Fetch-`
+    prefixed headers on the other, as described in [[resource-isolation-policy]].
 
-2.  **Restrict attackers' ability to frame your data as a document** by opt-ing into framing
+2.  **Restrict attackers' ability to load your data as a subresource** by setting a
+    [=cross-origin resource policy=] (CORP) of `same-origin` (opening up to `same-site`
+    or `cross-origin` only when necessary).
+
+3.  **Restrict attackers' ability to frame your data as a document** by opt-ing into framing
     protections via `X-Frame-Options: SAMEORIGIN` or CSP's more granular [=frame-ancestors=]
     directive (`frame-ancestors 'self' https://trusted.embedder`, for example).
 
-3.  **Restrict attackers' ability to obtain a handle to your window** by setting a
+4.  **Restrict attackers' ability to obtain a handle to your window** by setting a
     [=cross-origin opener policy=] (COOP). In the best case, you can default to a restrictive
     `same-origin` value, opening up to `same-origin-allow-popups` or `unsafe-none` only if
     necessary.
 
-4.  **Prevent MIME-type confusion attacks** and increase the robustness of passive defenses like
+5.  **Prevent MIME-type confusion attacks** and increase the robustness of passive defenses like
     [=cross-origin read blocking=] (CORB) /
     <a href="https://github.com/annevk/orb">opaque response blocking</a> ([[ORB]]) by setting
-    `X-Content-Type-Options: nosniff` on all your responses.
+    correct `Content-Type` headers, and globally asserting `X-Content-Type-Options: nosniff`.
 
-ISSUE: Actually describe mitigations, swiping liberally from
+ISSUE: Describe these mitigations in more depth, swiping liberally from
 <a href="https://docs.google.com/document/d/1JBUaX1xSOZRxBk5bRNZWgnzyJoCQC52TIRokACBSmGc/edit?resourcekey=0-cZ7da6v52enjwRSsp_tLyQ">Notes on the threat model of *cross-origin isolation*</a>,
 <a href="https://docs.google.com/document/d/1zDlfvfTJ_9e8Jdc8ehuV4zMEu9ySMCiTGMS9y0GU92k/edit">Safely reviving shared memory</a>, etc.
 
