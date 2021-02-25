@@ -190,7 +190,8 @@ Spectre-like side-channel attacks inexorably lead to a model in which active web
 has entered the address space of the process which hosts it. While this has deep implications for
 user agent implementations' internal hardening strategies (stack canaries, ASLR, etc), here we'll
 remain focused on the core implication at the web platform level, which is both simple and profound:
-any data which flows into an origin's process is legible to that origin. We must design accordingly.
+any data which flows into a process hosting a given origin is legible to that origin. We must design
+accordingly.
 
 In order to determine the scope of data that can be assumed accessible to an attacker, we must make
 a few assumptions about the normally-not-web-exposed process model which the user agent implements.
@@ -202,8 +203,8 @@ The following seems like a good place to start:
     invisible to any process potentially hosting untrusted code.
 
 2.  User agents are able to make decisions about whether or not a given resource should be delivered
-    to an origin's process based on characteristics of both the request and the response (headers,
-    etc).
+    to a process hosting a given origin based on characteristics of both the request and the
+    response (headers, etc).
 
 3.  User agents can consistently separate top-level, cross-origin windows into distinct processes.
     They cannot consistently separate same-site or same-origin windows into distinct processes given
