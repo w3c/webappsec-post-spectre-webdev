@@ -182,7 +182,8 @@ This document will summarize the threat model which the Web Application Security
 espouses(?), point to a set of mitigations which seem promising, and provide concrete recommendations
 for developers responsible for protecting users' data.
 
-ISSUE: Propose this to WebAppSec.
+ISSUE: Proposed to, but not yet accepted by, WebAppSec in
+<a href="https://lists.w3.org/Archives/Public/public-webappsec/2021Feb/0007.html">Feb. 2021</a>.
 
 Threat Model {#threat-model}
 ----------------------------

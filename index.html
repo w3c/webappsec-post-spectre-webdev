@@ -1486,7 +1486,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version c5172e83, updated Fri Nov 20 15:35:20 2020 -0800" name="generator">
   <link href="https://mikewest.github.io/post-spectre-webdev/" rel="canonical">
-  <meta content="1ebb4b0e577bdbe3499bc6f59b4dd2c89a0eaa11" name="document-revision">
+  <meta content="00c558cd1a8543faf4012f3cbb56d919c955762f" name="document-revision">
 <style>/* style-autolinks */
 
 .css.css, .property.property, .descriptor.descriptor {
@@ -2043,7 +2043,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Post-Spectre Web Development</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">A Collection of Interesting Ideas, <time class="dt-updated" datetime="2021-02-25">25 February 2021</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">A Collection of Interesting Ideas, <time class="dt-updated" datetime="2021-02-26">26 February 2021</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -2058,7 +2058,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
    <div data-fill-with="warning"></div>
    <p class="copyright" data-fill-with="copyright"><a href="http://creativecommons.org/publicdomain/zero/1.0/" rel="license"><img alt="CC0" src="https://licensebuttons.net/p/zero/1.0/80x15.png"></a> To the extent possible under law, the editors have waived all copyright
 and related or neighboring rights to this work.
-In addition, as of 25 February 2021,
+In addition, as of 26 February 2021,
 the editors have made this specification available under the <a href="http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0" rel="license">Open Web Foundation Agreement Version 1.0</a>,
 which is available at http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0.
 Parts of this work may be from another specification document.  If so, those parts are instead covered by the license of that specification document. </p>
@@ -2134,7 +2134,7 @@ ready and waiting for use.</p>
    <p>This document will summarize the threat model which the Web Application Security Working group
 espouses(?), point to a set of mitigations which seem promising, and provide concrete recommendations
 for developers responsible for protecting users' data.</p>
-   <p class="issue" id="issue-bdf75540"><a class="self-link" href="#issue-bdf75540"></a> Propose this to WebAppSec.</p>
+   <p class="issue" id="issue-b2d6f667"><a class="self-link" href="#issue-b2d6f667"></a> Proposed to, but not yet accepted by, WebAppSec in <a href="https://lists.w3.org/Archives/Public/public-webappsec/2021Feb/0007.html">Feb. 2021</a>.</p>
    <h3 class="heading settled" data-level="1.1" id="threat-model"><span class="secno">1.1. </span><span class="content">Threat Model</span><a class="self-link" href="#threat-model"></a></h3>
    <p>Spectre-like side-channel attacks inexorably lead to a model in which active web content
 (JavaScript, WASM, probably CSS if we tried hard enough, and so on) can read any and all data which
@@ -2797,7 +2797,7 @@ we currently espouse. The following is an incomplete list of those works:</p>
   </dl>
   <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
   <div style="counter-reset:issue">
-   <div class="issue"> Propose this to WebAppSec.<a href="#issue-bdf75540"> ↵ </a></div>
+   <div class="issue"> Proposed to, but not yet accepted by, WebAppSec in <a href="https://lists.w3.org/Archives/Public/public-webappsec/2021Feb/0007.html">Feb. 2021</a>.<a href="#issue-b2d6f667"> ↵ </a></div>
    <div class="issue"> <a data-link-type="biblio" href="#biblio-coi-threat-model">[COI-THREAT-MODEL]</a> spells out more implications. Bring them in here for more nuance.<a href="#issue-340f57a5"> ↵ </a></div>
    <div class="issue"> Describe these mitigations in more depth, swiping liberally from <a href="https://docs.google.com/document/d/1JBUaX1xSOZRxBk5bRNZWgnzyJoCQC52TIRokACBSmGc/edit?resourcekey=0-cZ7da6v52enjwRSsp_tLyQ">Notes on the threat model of <em>cross-origin isolation</em></a>, <a href="https://docs.google.com/document/d/1zDlfvfTJ_9e8Jdc8ehuV4zMEu9ySMCiTGMS9y0GU92k/edit">Safely reviving shared memory</a>, etc.<a href="#issue-db0b0c7b"> ↵ </a></div>
    <div class="issue"> If we implemented more granular bindings for CORP headers (along
