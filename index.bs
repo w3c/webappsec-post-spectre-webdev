@@ -178,7 +178,7 @@ The bad news is that this is going to be a lot of work, much of it falling on th
 web developers. The good news is that a reasonable set of mitigation primitives exists today,
 ready and waiting for use.
 
-This document will summarize the threat model which the Web Application Security Working group
+This document will summarize the threat model which the Web Application Security Working Group
 espouses(?), point to a set of mitigations which seem promising, and provide concrete recommendations
 for developers responsible for protecting users' data.
 
