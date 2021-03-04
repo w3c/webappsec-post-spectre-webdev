@@ -325,10 +325,12 @@ Cross-Origin-Resource-Policy: cross-origin
 Timing-Allow-Origin: *</strong>
 Content-Security-Policy: sandbox
 Cross-Origin-Opener-Policy: same-origin
-Vary: Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site
 X-Content-Type-Options: nosniff
 X-Frame-Options: DENY
 </pre>
+
+Note: Purely static resources always respond with the same data, no matter the request. There's
+therefore little benefit to sending a `Vary` header: it can be safely omitted for these responses.
 
 CDNs are the canonical static resource distribution points, and many use the pattern above. Take
 a look at the following common resources' response headers for inspiration:

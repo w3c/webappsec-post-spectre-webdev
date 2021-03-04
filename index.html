@@ -1486,7 +1486,7 @@ Possible extra rowspan handling
 </style>
   <meta content="Bikeshed version c5172e83, updated Fri Nov 20 15:35:20 2020 -0800" name="generator">
   <link href="https://mikewest.github.io/post-spectre-webdev/" rel="canonical">
-  <meta content="00c558cd1a8543faf4012f3cbb56d919c955762f" name="document-revision">
+  <meta content="e3aaff3d976a995ec9ab7747397c57d2de6fa5dd" name="document-revision">
 <style>/* style-autolinks */
 
 .css.css, .property.property, .descriptor.descriptor {
@@ -2043,7 +2043,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"></p>
    <h1 class="p-name no-ref" id="title">Post-Spectre Web Development</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">A Collection of Interesting Ideas, <time class="dt-updated" datetime="2021-02-26">26 February 2021</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">A Collection of Interesting Ideas, <time class="dt-updated" datetime="2021-03-04">4 March 2021</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -2058,7 +2058,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
    <div data-fill-with="warning"></div>
    <p class="copyright" data-fill-with="copyright"><a href="http://creativecommons.org/publicdomain/zero/1.0/" rel="license"><img alt="CC0" src="https://licensebuttons.net/p/zero/1.0/80x15.png"></a> To the extent possible under law, the editors have waived all copyright
 and related or neighboring rights to this work.
-In addition, as of 26 February 2021,
+In addition, as of 4 March 2021,
 the editors have made this specification available under the <a href="http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0" rel="license">Open Web Foundation Agreement Version 1.0</a>,
 which is available at http://www.openwebfoundation.org/legal/the-owf-1-0-agreements/owfa-1-0.
 Parts of this work may be from another specification document.  If so, those parts are instead covered by the license of that specification document. </p>
@@ -2246,10 +2246,11 @@ Cross-Origin-Resource-Policy: cross-origin
 Timing-Allow-Origin: *</strong>
 Content-Security-Policy: sandbox
 Cross-Origin-Opener-Policy: same-origin
-Vary: Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site
 X-Content-Type-Options: nosniff
 X-Frame-Options: DENY
 </pre>
+   <p class="note" role="note"><span>Note:</span> Purely static resources always respond with the same data, no matter the request. There’s
+therefore little benefit to sending a <code>Vary</code> header: it can be safely omitted for these responses.</p>
    <p>CDNs are the canonical static resource distribution points, and many use the pattern above. Take
 a look at the following common resources' response headers for inspiration:</p>
    <ul>
