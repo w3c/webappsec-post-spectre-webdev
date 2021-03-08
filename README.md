@@ -2,4 +2,4 @@
 
 Sketching a threat model and concrete examples of mitigation.
 
-<https://mikewest.github.io/post-spectre-webdev/>
+<https://w3c.github.io/post-spectre-webdev/>
