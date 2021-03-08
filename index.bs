@@ -2,9 +2,8 @@
 Title: Post-Spectre Web Development
 Shortname: post-spectre-webdev
 Level: 1
-Status: ED
-Group: WebAppSec
-URL: https://w3c.github.io/webappsec-post-spectre-webdev/
+Status: DREAM
+URL: https://mikewest.github.io/post-spectre-webdev/
 Editor: Mike West, Google, mkwst@google.com
 Abstract:
     Post-Spectre, we need to adopt some new strategies for safe and secure web developement. This
