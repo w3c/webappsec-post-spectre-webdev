@@ -2,8 +2,9 @@
 Title: Post-Spectre Web Development
 Shortname: post-spectre-webdev
 Level: 1
-Status: DREAM
-URL: https://mikewest.github.io/post-spectre-webdev/
+Status: ED
+Group: WebAppSec
+URL: https://w3c.github.io/webappsec-post-spectre-webdev/
 Editor: Mike West, Google, mkwst@google.com
 Abstract:
     Post-Spectre, we need to adopt some new strategies for safe and secure web developement. This
@@ -179,11 +180,8 @@ web developers. The good news is that a reasonable set of mitigation primitives 
 ready and waiting for use.
 
 This document will summarize the threat model which the Web Application Security Working Group
-espouses(?), point to a set of mitigations which seem promising, and provide concrete recommendations
+espouses, point to a set of mitigations which seem promising, and provide concrete recommendations
 for developers responsible for protecting users' data.
-
-ISSUE: Proposed to, but not yet accepted by, WebAppSec in
-<a href="https://lists.w3.org/Archives/Public/public-webappsec/2021Feb/0007.html">Feb. 2021</a>.
 
 Threat Model {#threat-model}
 ----------------------------
