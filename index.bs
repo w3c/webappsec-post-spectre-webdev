@@ -7,7 +7,7 @@ Group: WebAppSec
 URL: https://w3c.github.io/webappsec-post-spectre-webdev/
 Editor: Mike West, Google, mkwst@google.com
 Abstract:
-    Post-Spectre, we need to adopt some new strategies for safe and secure web developement. This
+    Post-Spectre, we need to adopt some new strategies for safe and secure web development. This
     document outlines a threat model we can share, and a set of mitigation recommendations.
     
     **TL;DR**: Your data must not unexpectedly enter an attacker's process.
