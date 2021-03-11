@@ -5,7 +5,7 @@ Level: 1
 Status: ED
 Group: WebAppSec
 URL: https://w3c.github.io/webappsec-post-spectre-webdev/
-Editor: Mike West, Google, mkwst@google.com
+Editor: Mike West, Google, mkwst@google.com, w3cid 56384
 Abstract:
     Post-Spectre, we need to adopt some new strategies for safe and secure web development. This
     document outlines a threat model we can share, and a set of mitigation recommendations.
