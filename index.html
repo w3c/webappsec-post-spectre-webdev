@@ -6,7 +6,7 @@
   <link href="https://www.w3.org/StyleSheets/TR/2016/W3C-ED" rel="stylesheet">
   <meta content="Bikeshed version b94c7e755, updated Fri Feb 19 16:28:59 2021 -0800" name="generator">
   <link href="https://w3c.github.io/webappsec-post-spectre-webdev/" rel="canonical">
-  <meta content="44b681d6e6aa047ca84316db14dd43475fc252a1" name="document-revision">
+  <meta content="8f469d92ee7a34ba510b25294c72c76c7d3b7568" name="document-revision">
 <style>/* style-autolinks */
 
 .css.css, .property.property, .descriptor.descriptor {
@@ -743,8 +743,8 @@ seem generally applicable:</p>
      <p>Sites should use Fetch Metadata to make good decisions about when to serve resources, as
 described in <a data-link-type="biblio" href="#biblio-resource-isolation-policy">[resource-isolation-policy]</a>. In order to ensure that decision sticks, servers
 should explain its decision to the browser by sending a <a data-link-type="http-header" href="https://tools.ietf.org/html/rfc7231#section-7.1.4" id="ref-for-section-7.1.4"><code>Vary</code></a> header
-containing <code>Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site</code>. This ensures that the server has
-a chance to make different decisions for requests which will be <em>used</em> differently.</p>
+containing <code>Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site, Sec-Fetch-User</code>. This ensures that
+the server has a chance to make different decisions for requests which will be <em>used</em> differently.</p>
     <li data-md>
      <p>Subresources should opt-out of MIME type sniffing by sending an <a data-link-type="http-header" href="https://fetch.spec.whatwg.org/#http-x-content-type-options" id="ref-for-http-x-content-type-options"><code>X-Content-Type-Options</code></a> header with a value of <code>nosniff</code>. This increases the
 robustness of MIME-based checks like <a data-link-type="dfn" href="https://fetch.spec.whatwg.org/#corb" id="ref-for-corb①">cross-origin read blocking</a> (CORB) / <a href="https://github.com/annevk/orb">opaque response blocking</a> (<a data-link-type="biblio" href="#biblio-orb">[ORB]</a>), and mitigates
@@ -774,7 +774,7 @@ from being framed.</p>
 few times below:</p>
 <pre class="highlight">Content-Security-Policy: sandbox
 Cross-Origin-Opener-Policy: same-origin
-Vary: Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site
+Vary: Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site, Sec-Fetch-User
 X-Content-Type-Options: nosniff
 X-Frame-Options: DENY
 </pre>
@@ -826,7 +826,7 @@ usage as a subresource in same-origin contexts by sending a <a data-link-type="h
 <pre class="highlight"><strong>Cross-Origin-Resource-Policy: same-origin</strong>
 Content-Security-Policy: sandbox
 Cross-Origin-Opener-Policy: same-origin
-Vary: Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site
+Vary: Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site, Sec-Fetch-User
 X-Content-Type-Options: nosniff
 X-Frame-Options: DENY
 </pre>
@@ -853,7 +853,7 @@ Access-Control-Allow-...: ...
 Cross-Origin-Resource-Policy: same-origin</strong>
 Content-Security-Policy: sandbox
 Cross-Origin-Opener-Policy: same-origin
-Vary: Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site
+Vary: Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site, Sec-Fetch-User
 X-Content-Type-Options: nosniff
 X-Frame-Options: DENY
 </pre>
@@ -878,7 +878,7 @@ access control headers:</p>
 <pre class="highlight"><strong>Cross-Origin-Resource-Policy: cross-origin</strong>
 Content-Security-Policy: sandbox
 Cross-Origin-Opener-Policy: same-origin
-Vary: Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site
+Vary: Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site, Sec-Fetch-User
 X-Content-Type-Options: nosniff
 X-Frame-Options: DENY
 </pre>
@@ -908,7 +908,7 @@ the page can be used once delivered. For instance, something like the following 
 headers could be appropriate:</p>
 <pre class="highlight">Cross-Origin-Opener-Policy: same-origin
 Cross-Origin-Resource-Policy: same-origin
-Vary: Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site
+Vary: Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site, Sec-Fetch-User
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 </pre>
@@ -930,7 +930,7 @@ but they can’t easily lock themselves off from all such vectors via <code>Cros
 like the following set of response headers might be appropriate:</p>
 <pre class="highlight">Cross-Origin-Opener-Policy: same-origin-allow-popups
 Cross-Origin-Resource-Policy: same-origin
-Vary: Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site
+Vary: Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site, Sec-Fetch-User
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 </pre>
@@ -950,7 +950,7 @@ or fetched cross-origin. Three scenarios are worth considering:</p>
 opener policy by serving the following headers:</p>
 <pre class="highlight">Cross-Origin-Resource-Policy: same-origin
 <strong>Cross-Origin-Opener-Policy: unsafe-none</strong>
-Vary: Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site
+Vary: Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site, Sec-Fetch-User
 X-Content-Type-Options: nosniff
 X-Frame-Options: SAMEORIGIN
 </pre>
@@ -964,7 +964,7 @@ X-Frame-Options: SAMEORIGIN
 protections by serving the following headers:</p>
 <pre class="highlight">Cross-Origin-Resource-Policy: same-origin
 Cross-Origin-Opener-Policy: same-origin
-Vary: Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site
+Vary: Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site, Sec-Fetch-User
 X-Content-Type-Options: nosniff
 <strong>X-Frame-Options: ALLOWALL</strong>
 </pre>
@@ -988,7 +988,7 @@ opener policies and framing protections by combining the recommendations above, 
 following headers:</p>
 <pre class="lang-http highlight">Cross-Origin-Resource-Policy: same-origin
 <strong>Cross-Origin-Opener-Policy: unsafe-none</strong>
-Vary: Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site
+Vary: Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site, Sec-Fetch-User
 X-Content-Type-Options: nosniff
 <strong>X-Frame-Options: ALLOWALL</strong>
 </pre>
