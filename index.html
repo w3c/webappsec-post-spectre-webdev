@@ -6,7 +6,7 @@
   <link href="https://www.w3.org/StyleSheets/TR/2016/W3C-ED" rel="stylesheet">
   <meta content="Bikeshed version b94c7e755, updated Fri Feb 19 16:28:59 2021 -0800" name="generator">
   <link href="https://www.w3.org/TR/post-spectre-webdev/" rel="canonical">
-  <meta content="eced5acbf8541f464143f24cb671c72b81867e35" name="document-revision">
+  <meta content="0dbe2aadea9e363a8f919c41d5254b258858077e" name="document-revision">
 <style>/* style-autolinks */
 
 .css.css, .property.property, .descriptor.descriptor {
@@ -563,7 +563,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Post-Spectre Web Development</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2021-03-16">16 March 2021</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2021-03-18">18 March 2021</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -707,7 +707,7 @@ response (headers, etc).</p>
 They cannot consistently separate same-site or same-origin windows into distinct processes given
 the potential for synchronous access between the windows.</p>
     <li data-md>
-     <p>User agents cannot yet consistently seperate framed origins into processes distinct from their
+     <p>User agents cannot yet consistently separate framed origins into processes distinct from their
 embedders' origin.</p>
      <p class="note" role="note"><span>Note:</span> Though some user agents support out-of-process frames <a data-link-type="biblio" href="#biblio-oopif">[OOPIF]</a>, no agent supports it
 consistently across a broad range of devices and platforms. Ideally this will change over time,
@@ -762,7 +762,7 @@ which collectively make it difficult to meaningfully abuse a subresource via nav
 directly as a top-level document. No scripts will execute, and the resource will be pushed
 into an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/origin.html#concept-origin-opaque" id="ref-for-concept-origin-opaque">opaque origin</a>.</p>
        <p class="note" role="note"><span>Note:</span> Some servers deliver <code>Content-Disposition: attachment; filename=file.name</code> to obtain
-a similar effect. This was valuable to mitigate vulnerabilies in Flash, but the sandbox
+a similar effect. This was valuable to mitigate vulnerabilities in Flash, but the sandbox
 approach seems to more straightforwardly address the threats we care about today.</p>
       <li data-md>
        <p>Asserting the <a data-link-type="http-header" href="https://html.spec.whatwg.org/multipage/origin.html#cross-origin-opener-policies" id="ref-for-cross-origin-opener-policies①"><code>Cross-Origin-Opener-Policy</code></a> header with a value of <code>same-origin</code> prevents cross-origin documents from retaining a handle to the resource’s
