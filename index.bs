@@ -67,11 +67,6 @@ urlPrefix: https://fetch.spec.whatwg.org/; spec: FETCH; type: http-header
       "title": "Site Isolation",
       "authors": [ "Chromium" ]
     },
-    "site-isolation": {
-      "href": "https://www.chromium.org/Home/chromium-security/site-isolation",
-      "title": "Site Isolation",
-      "authors": [ "Chromium" ]
-    },
     "project-fission": {
       "href": "https://wiki.mozilla.org/Project_Fission",
       "title": "Project Fission",
