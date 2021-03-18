@@ -6,7 +6,7 @@
   <link href="https://www.w3.org/StyleSheets/TR/2016/W3C-ED" rel="stylesheet">
   <meta content="Bikeshed version b94c7e755, updated Fri Feb 19 16:28:59 2021 -0800" name="generator">
   <link href="https://www.w3.org/TR/post-spectre-webdev/" rel="canonical">
-  <meta content="f7adcfb5fd456f7042f41623cfdd155ff4934041" name="document-revision">
+  <meta content="466a1899331cd8cde1f72bf0d9e8e77c5d0c686b" name="document-revision">
 <style>/* style-autolinks */
 
 .css.css, .property.property, .descriptor.descriptor {
@@ -918,7 +918,7 @@ X-Frame-Options: SAMEORIGIN
 </pre>
    <p class="note" role="note"><span>Note:</span> Documents which need to make use of APIs that require full cross-origin isolation (such
 as <code class="idl"><a data-link-type="idl" href="https://tc39.es/ecma262/#sec-sharedarraybuffer-objects" id="ref-for-sec-sharedarraybuffer-objects">SharedArrayBuffer</a></code>), will also need to serve a <code>Cross-Origin-Embedder-Policy</code> header, as
-outlined in <a data-link-type="biblio" href="#biblio-coop-coep">[coop-coep]</a>.</p>
+outlined in <a data-link-type="biblio" href="#biblio-coop-coep">[coop-coep]</a> and <a data-link-type="biblio" href="#biblio-cross-origin-isolation-guide">[cross-origin-isolation-guide]</a>.</p>
    <p>Account settings pages, admin panels, and application-specific documents are all good examples of
 resources which would benefit from as much isolation as possible. For real-life examples, consider:</p>
    <ul>
@@ -1222,6 +1222,8 @@ we currently espouse. The following is an incomplete list of those works:</p>
    <dd>Artur Janc; Charlie Reis; Anne van Kesteren. <a href="https://docs.google.com/document/d/1zDlfvfTJ_9e8Jdc8ehuV4zMEu9ySMCiTGMS9y0GU92k/edit">COOP and COEP Explained</a>. 2020-01-03. URL: <a href="https://docs.google.com/document/d/1zDlfvfTJ_9e8Jdc8ehuV4zMEu9ySMCiTGMS9y0GU92k/edit">https://docs.google.com/document/d/1zDlfvfTJ_9e8Jdc8ehuV4zMEu9ySMCiTGMS9y0GU92k/edit</a>
    <dt id="biblio-cross-origin-embedder-policy">[CROSS-ORIGIN-EMBEDDER-POLICY]
    <dd>Mike West. <a href="https://wicg.github.io/cross-origin-embedder-policy/">Cross-Origin Embedder Policy</a>. 2020-09-29. URL: <a href="https://wicg.github.io/cross-origin-embedder-policy/">https://wicg.github.io/cross-origin-embedder-policy/</a>
+   <dt id="biblio-cross-origin-isolation-guide">[CROSS-ORIGIN-ISOLATION-GUIDE]
+   <dd>Eiji Kitamura. <a href="https://web.dev/cross-origin-isolation-guide/">A guide to enable cross-origin isolation</a>. URL: <a href="https://web.dev/cross-origin-isolation-guide/">https://web.dev/cross-origin-isolation-guide/</a>
    <dt id="biblio-cross-origin-opener-policy-explainer">[CROSS-ORIGIN-OPENER-POLICY-EXPLAINER]
    <dd>Charlie Reis; Camille Lamy. <a href="https://docs.google.com/document/d/1Ey3MXcLzwR1T7aarkpBXEwP7jKdd2NvQdgYvF8_8scI/edit">Cross-Origin-Opener-Policy Explainer</a>. 2020-05-24. URL: <a href="https://docs.google.com/document/d/1Ey3MXcLzwR1T7aarkpBXEwP7jKdd2NvQdgYvF8_8scI/edit">https://docs.google.com/document/d/1Ey3MXcLzwR1T7aarkpBXEwP7jKdd2NvQdgYvF8_8scI/edit</a>
    <dt id="biblio-embedding-requires-opt-in">[EMBEDDING-REQUIRES-OPT-IN]
