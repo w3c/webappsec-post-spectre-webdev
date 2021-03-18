@@ -82,6 +82,11 @@ urlPrefix: https://fetch.spec.whatwg.org/; spec: FETCH; type: http-header
       "title": "Resource Isolation Policy",
       "authors": [ "XSLeaks Wiki" ]
     },
+    "cross-origin-isolation-guide": {
+      "href": "https://web.dev/cross-origin-isolation-guide/",
+      "title": "A guide to enable cross-origin isolation",
+      "authors": [ "Eiji Kitamura" ]
+    },
     "coop-coep": {
       "href": "https://web.dev/coop-coep/",
       "title": "Making your website 'cross-origin isolated' using COOP and COEP",
@@ -461,7 +466,7 @@ X-Frame-Options: SAMEORIGIN
 
 Note: Documents which need to make use of APIs that require full cross-origin isolation (such
 as {{SharedArrayBuffer}}), will also need to serve a `Cross-Origin-Embedder-Policy` header, as
-outlined in [[coop-coep]].
+outlined in [[coop-coep]] and [[cross-origin-isolation-guide]].
 
 Account settings pages, admin panels, and application-specific documents are all good examples of
 resources which would benefit from as much isolation as possible. For real-life examples, consider:
