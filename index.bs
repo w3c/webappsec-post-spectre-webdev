@@ -1,7 +1,7 @@
 <pre class='metadata'>
 Title: Post-Spectre Web Development
 Shortname: post-spectre-webdev
-Level: 1
+Level: none
 Status: ED
 Group: WebAppSec
 ED: https://w3c.github.io/webappsec-post-spectre-webdev/
