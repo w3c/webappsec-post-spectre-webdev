@@ -6,7 +6,7 @@
   <link href="https://www.w3.org/StyleSheets/TR/2016/W3C-ED" rel="stylesheet">
   <meta content="Bikeshed version bb6b91100, updated Mon Jul 12 16:52:37 2021 -0700" name="generator">
   <link href="https://www.w3.org/TR/post-spectre-webdev/" rel="canonical">
-  <meta content="ba72eae1082d44964f811094c5fb853cb37cb5a1" name="document-revision">
+  <meta content="7e2d1d4e062cbebb51c7174e6cc927065a65b554" name="document-revision">
 <style>/* style-autolinks */
 
 .css.css, .property.property, .descriptor.descriptor {
@@ -1018,7 +1018,7 @@ likely that we’ll be able to shift the web’s defaults in the future.</p>
    <h3 class="heading settled" data-level="3.2" id="local-scheme-frames"><span class="secno">3.2. </span><span class="content">Isolating Local-Scheme Frames</span><a class="self-link" href="#local-scheme-frames"></a></h3>
    <p>Note that frames loaded from local schemes will generally inherit policies applied to the document
 which created them, and may end up in-process with that document if the stars align unfortunately.
-Developers are encouraged to explicitly shift these documents to opaque origins, either by using <code>data:</code> URLs directly, or by applying a <code><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-sandbox" id="ref-for-attr-iframe-sandbox">sandbox</a></code> attribute to frames created using <code>&lt;iframe srcdoc="..."></code>. <code>blob:</code> URLs, and so on.</p>
+Developers are encouraged to explicitly shift these documents to opaque origins, either by using <code>data:</code> URLs directly, or by applying a <code><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-sandbox" id="ref-for-attr-iframe-sandbox">sandbox</a></code> attribute to frames created using <code>&lt;iframe srcdoc="..."></code>, <code>blob:</code> URLs, and so on.</p>
    <p>Likewise, user agents are encouraged to take <code><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-sandbox" id="ref-for-attr-iframe-sandbox①">sandbox</a></code> attributes into account when
 allocating processes for framed documents, and to align the process boundary with the origin
 boundary whenever possible.</p>
