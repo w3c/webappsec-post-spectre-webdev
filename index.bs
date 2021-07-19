@@ -588,7 +588,7 @@ Note that frames loaded from local schemes will generally inherit policies appli
 which created them, and may end up in-process with that document if the stars align unfortunately.
 Developers are encouraged to explicitly shift these documents to opaque origins, either by using
 `data:` URLs directly, or by applying a <{iframe/sandbox}> attribute to frames created using
-`<iframe srcdoc="...">`. `blob:` URLs, and so on.
+`<iframe srcdoc="...">`, `blob:` URLs, and so on.
 
 Likewise, user agents are encouraged to take <{iframe/sandbox}> attributes into account when
 allocating processes for framed documents, and to align the process boundary with the origin
