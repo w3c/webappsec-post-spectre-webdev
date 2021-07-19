@@ -4,9 +4,9 @@
   <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
   <title>Post-Spectre Web Development</title>
   <link href="https://www.w3.org/StyleSheets/TR/2016/W3C-ED" rel="stylesheet">
-  <meta content="Bikeshed version b94c7e755, updated Fri Feb 19 16:28:59 2021 -0800" name="generator">
+  <meta content="Bikeshed version bb6b91100, updated Mon Jul 12 16:52:37 2021 -0700" name="generator">
   <link href="https://www.w3.org/TR/post-spectre-webdev/" rel="canonical">
-  <meta content="466a1899331cd8cde1f72bf0d9e8e77c5d0c686b" name="document-revision">
+  <meta content="ba72eae1082d44964f811094c5fb853cb37cb5a1" name="document-revision">
 <style>/* style-autolinks */
 
 .css.css, .property.property, .descriptor.descriptor {
@@ -113,9 +113,9 @@ pre .property::before, pre .property::after {
     --ins-bg: transparent;
 
     --a-normal-text: #034575;
-    --a-normal-underline: #707070;
+    --a-normal-underline: #bbb;
     --a-visited-text: var(--a-normal-text);
-    --a-visited-underline: #bbb;
+    --a-visited-underline: #707070;
     --a-hover-bg: rgba(75%, 75%, 75%, .25);
     --a-active-text: #c00;
     --a-active-underline: #c00;
@@ -563,7 +563,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2016/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Post-Spectre Web Development</h1>
-   <h2 class="no-num no-toc no-ref heading settled" id="subtitle"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2021-03-18">18 March 2021</time></span></h2>
+   <h2 class="no-num no-toc no-ref heading settled" id="profile-and-date"><span class="content">Editor’s Draft, <time class="dt-updated" datetime="2021-07-19">19 July 2021</time></span></h2>
    <div data-fill-with="spec-metadata">
     <dl>
      <dt>This version:
@@ -607,10 +607,10 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
 	“[post-spectre-webdev] <em>…summary of comment…</em>” </p>
    <p> This document was produced by the <a href="https://www.w3.org/2011/webappsec/">Web Application Security Working Group</a>. </p>
    <p> This document was produced by a group operating under
-	the <a href="https://www.w3.org/Consortium/Patent-Policy-20170801/">W3C Patent Policy</a>.
-	W3C maintains a <a href="https://www.w3.org/2004/01/pp-impl/49309/status" rel="disclosure">public list of any patent disclosures</a> made in connection with the deliverables of the group;
+	the <a href="https://www.w3.org/Consortium/Patent-Policy/">W3C Patent Policy</a>.
+	W3C maintains a <a href="https://www.w3.org/groups/wg/webappsec/ipr" rel="disclosure">public list of any patent disclosures</a> made in connection with the deliverables of the group;
 	that page also includes instructions for disclosing a patent.
-	An individual who has actual knowledge of a patent which the individual believes contains <a href="https://www.w3.org/Consortium/Patent-Policy-20170801/#def-essential">Essential Claim(s)</a> must disclose the information in accordance with <a href="https://www.w3.org/Consortium/Patent-Policy-20170801/#sec-Disclosure">section 6 of the W3C Patent Policy</a>. </p>
+	An individual who has actual knowledge of a patent which the individual believes contains <a href="https://www.w3.org/Consortium/Patent-Policy/#def-essential">Essential Claim(s)</a> must disclose the information in accordance with <a href="https://www.w3.org/Consortium/Patent-Policy/#sec-Disclosure">section 6 of the W3C Patent Policy</a>. </p>
    <p> This document is governed by the <a href="https://www.w3.org/2020/Process-20200915/" id="w3c_process_revision">15 September 2020 W3C Process Document</a>. </p>
    <p></p>
   </div>
@@ -645,6 +645,7 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
      <a href="#considerations"><span class="secno">3</span> <span class="content">Implementation Considerations</span></a>
      <ol class="toc">
       <li><a href="#explicit-defaults"><span class="secno">3.1</span> <span class="content">Explicitly Setting Headers with Default Values</span></a>
+      <li><a href="#local-scheme-frames"><span class="secno">3.2</span> <span class="content">Isolating Local-Scheme Frames</span></a>
      </ol>
     <li><a href="#acks"><span class="secno">4</span> <span class="content">Acknowledgements</span></a>
     <li>
@@ -1014,6 +1015,13 @@ making them opt-out rather than opt-in. This would place the configuration cost 
 whose projects require risky settings.</p>
    <p>This document recommends setting those less-secure header values explicitly, as that makes it more
 likely that we’ll be able to shift the web’s defaults in the future.</p>
+   <h3 class="heading settled" data-level="3.2" id="local-scheme-frames"><span class="secno">3.2. </span><span class="content">Isolating Local-Scheme Frames</span><a class="self-link" href="#local-scheme-frames"></a></h3>
+   <p>Note that frames loaded from local schemes will generally inherit policies applied to the document
+which created them, and may end up in-process with that document if the stars align unfortunately.
+Developers are encouraged to explicitly shift these documents to opaque origins, either by using <code>data:</code> URLs directly, or by applying a <code><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-sandbox" id="ref-for-attr-iframe-sandbox">sandbox</a></code> attribute to frames created using <code>&lt;iframe srcdoc="..."></code>. <code>blob:</code> URLs, and so on.</p>
+   <p>Likewise, user agents are encouraged to take <code><a data-link-type="element-sub" href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-sandbox" id="ref-for-attr-iframe-sandbox①">sandbox</a></code> attributes into account when
+allocating processes for framed documents, and to align the process boundary with the origin
+boundary whenever possible.</p>
    <h2 class="heading settled" data-level="4" id="acks"><span class="secno">4. </span><span class="content">Acknowledgements</span><a class="self-link" href="#acks"></a></h2>
    <p>This document relies upon a number of excellent resources that spell out much of the foundation
 of our understanding of Spectre’s implications for the web, and justify the mitigation strategies
@@ -1143,6 +1151,12 @@ we currently espouse. The following is an incomplete list of those works:</p>
     <li><a href="#ref-for-dom-window-postmessage-options">2.2.3. Documents Expecting Cross-Origin Openers</a>
    </ul>
   </aside>
+  <aside class="dfn-panel" data-for="term-for-attr-iframe-sandbox">
+   <a href="https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-sandbox">https://html.spec.whatwg.org/multipage/iframe-embed-object.html#attr-iframe-sandbox</a><b>Referenced in:</b>
+   <ul>
+    <li><a href="#ref-for-attr-iframe-sandbox">3.2. Isolating Local-Scheme Frames</a> <a href="#ref-for-attr-iframe-sandbox①">(2)</a>
+   </ul>
+  </aside>
   <aside class="dfn-panel" data-for="term-for-the-x-frame-options-header">
    <a href="https://html.spec.whatwg.org/multipage/browsing-the-web.html#the-x-frame-options-header">https://html.spec.whatwg.org/multipage/browsing-the-web.html#the-x-frame-options-header</a><b>Referenced in:</b>
    <ul>
@@ -1186,6 +1200,7 @@ we currently espouse. The following is an incomplete list of those works:</p>
      <li><span class="dfn-paneled" id="term-for-concept-origin-opaque">opaque origin</span>
      <li><span class="dfn-paneled" id="term-for-concept-origin">origin</span>
      <li><span class="dfn-paneled" id="term-for-dom-window-postmessage-options">postMessage(message, options)</span>
+     <li><span class="dfn-paneled" id="term-for-attr-iframe-sandbox">sandbox</span>
      <li><span class="dfn-paneled" id="term-for-the-x-frame-options-header">x-frame-options</span>
     </ul>
    <li>
@@ -1198,7 +1213,7 @@ we currently espouse. The following is an incomplete list of those works:</p>
   <h3 class="no-num no-ref heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
   <dl>
    <dt id="biblio-csp3">[CSP3]
-   <dd>Mike West. <a href="https://www.w3.org/TR/CSP3/">Content Security Policy Level 3</a>. 13 March 2021. WD. URL: <a href="https://www.w3.org/TR/CSP3/">https://www.w3.org/TR/CSP3/</a>
+   <dd>Mike West. <a href="https://www.w3.org/TR/CSP3/">Content Security Policy Level 3</a>. 29 June 2021. WD. URL: <a href="https://www.w3.org/TR/CSP3/">https://www.w3.org/TR/CSP3/</a>
    <dt id="biblio-fetch">[FETCH]
    <dd>Anne van Kesteren. <a href="https://fetch.spec.whatwg.org/">Fetch Standard</a>. Living Standard. URL: <a href="https://fetch.spec.whatwg.org/">https://fetch.spec.whatwg.org/</a>
    <dt id="biblio-html">[HTML]
