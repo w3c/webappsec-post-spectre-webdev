@@ -27,7 +27,6 @@ urlPrefix: https://html.spec.whatwg.org/; spec: HTML;
         text: x-frame-options; url: multipage/browsing-the-web.html#the-x-frame-options-header
 urlPrefix: https://fetch.spec.whatwg.org/; spec: FETCH; type: dfn
     text: cross-origin resource policy; url: #http-cross-origin-resource-policy
-    text: cross-origin read blocking; url: #corb
 urlPrefix: https://tc39.es/ecma262/; spec: ECMA262; type: interface
     text: SharedArrayBuffer; url: #sec-sharedarraybuffer-objects
 urlPrefix: https://tools.ietf.org/html/rfc7231; spec: RFC7231; type: http-header
@@ -141,6 +140,11 @@ urlPrefix: https://fetch.spec.whatwg.org/; spec: FETCH; type: http-header
       "authors": [ "Artur Janc" ],
       "date": "2020-12"
     },
+    "corb": {
+      "href": "https://chromium.googlesource.com/chromium/src/+/HEAD/services/network/cross_origin_read_blocking_explainer.md",
+      "title": "Cross-Origin Read Blocking (CORB)",
+      "authors": [ "The Chromium Authors" ]
+    },
     "orb": {
       "href": "https://github.com/annevk/orb",
       "title": "Opaque Response Blocking (ORB, aka CORB++)",
@@ -247,7 +251,7 @@ TL;DR {#tldr}
     necessary.
 
 5.  **Prevent MIME-type confusion attacks** and increase the robustness of passive defenses like
-    [=cross-origin read blocking=] (CORB) /
+    <a href="https://chromium.googlesource.com/chromium/src/+/HEAD/services/network/cross_origin_read_blocking_explainer.md">cross-origin read blocking</a> ([[CORB]]) /
     <a href="https://github.com/annevk/orb">opaque response blocking</a> ([[ORB]]) by setting
     correct `Content-Type` headers, and globally asserting `X-Content-Type-Options: nosniff`.
 
@@ -274,7 +278,7 @@ seem generally applicable:
 
 2.  Subresources should opt-out of MIME type sniffing by sending an
     <a http-header>`X-Content-Type-Options`</a> header with a value of `nosniff`. This increases the
-    robustness of MIME-based checks like [=cross-origin read blocking=] (CORB) /
+    robustness of MIME-based checks like <a href="https://chromium.googlesource.com/chromium/src/+/HEAD/services/network/cross_origin_read_blocking_explainer.md">cross-origin read blocking</a> ([[CORB]]) /
     <a href="https://github.com/annevk/orb">opaque response blocking</a> ([[ORB]]), and mitigates
     some well-known risks around type confusion for scripts.
 
